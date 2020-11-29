@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MockAPIController {
 
-  private Board board = null;
+  private Board board;
 
   @PostConstruct
   private void makeDefaultBoard() {

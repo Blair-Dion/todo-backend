@@ -12,10 +12,10 @@ public class List {
 
   private Long id;
   private String name;
-  private boolean isArchived = false;
+  private boolean isArchived;
   private Board board;
   private final java.util.List<Card> cards = new ArrayList<>();
-  private LocalDateTime archivedDatetime = null;
+  private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
   private List(Long id, String name, boolean isArchived, Board board) {

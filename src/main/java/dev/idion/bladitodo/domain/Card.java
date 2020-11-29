@@ -12,10 +12,10 @@ public class Card {
   private Long id;
   private String title;
   private String contents;
-  private boolean isArchived = false;
+  private boolean isArchived;
   private User user;
   private List list;
-  private LocalDateTime archivedDatetime = null;
+  private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
   private Card(Long id, String title, String contents, User user, List list) {
