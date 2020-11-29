@@ -6,7 +6,9 @@ import dev.idion.bladitodo.domain.List;
 import dev.idion.bladitodo.domain.User;
 import dev.idion.bladitodo.domain.http.BoardDTO;
 import dev.idion.bladitodo.domain.http.BoardWithListIdResponse;
+import dev.idion.bladitodo.domain.http.ListDTO;
 import dev.idion.bladitodo.domain.http.UserDTO;
+import javax.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MockAPIController {
 
+  private Board board = null;
+
+  @PostConstruct
+  private void makeDefaultBoard() {
+    this.board = makeBoard(1L);
+  }
+
   @GetMapping("/v1/board/{boardId}")
   public BoardWithListIdResponse getBoardWithListIdOf(@PathVariable Long boardId) {
-    Board board = makeBoard(boardId);
-    return BoardWithListIdResponse.from(board);
+    this.board = makeBoard(boardId);
+
+    return BoardWithListIdResponse.from(this.board);
   }
 
   @GetMapping("/v2/board/{boardId}")
   public BoardDTO getBoardDTO(@PathVariable Long boardId) {
-    Board board = makeBoard(boardId);
-    return BoardDTO.from(board);
+    this.board = makeBoard(boardId);
+
+    return BoardDTO.from(this.board);
   }
 
   @GetMapping("/v1/user/{userId}")
@@ -42,20 +53,32 @@ public class MockAPIController {
     return UserDTO.from(user);
   }
 
+  @GetMapping("/v1/list/{listId}")
+  public ListDTO getListDTO(@PathVariable Long listId) {
+    java.util.List<List> lists = this.board.getLists();
+
+    if (listId > lists.size()) {
+      throw new IndexOutOfBoundsException("숫자가 너무 커요!");
+    }
+
+    List list = lists.get(listId.intValue() - 1);
+    return ListDTO.from(list);
+  }
+
   private Board makeBoard(Long boardId) {
     User user = User.builder()
         .withId(1L)
         .withUserId("ksundong")
         .build();
 
-    Board board = Board.builder()
+    Board manualBoard = Board.builder()
         .withId(boardId)
         .withName("테스트 보드")
         .build();
 
-    List list1 = List.builder().withId(1L).withName("TODO").withBoard(board).build();
-    List list2 = List.builder().withId(2L).withName("DOING").withBoard(board).build();
-    List list3 = List.builder().withId(3L).withName("DONE").withBoard(board).build();
+    List list1 = List.builder().withId(1L).withName("TODO").withBoard(manualBoard).build();
+    List list2 = List.builder().withId(2L).withName("DOING").withBoard(manualBoard).build();
+    List list3 = List.builder().withId(3L).withName("DONE").withBoard(manualBoard).build();
 
     Card card1 = Card.builder()
         .withId(1L)
@@ -83,10 +106,10 @@ public class MockAPIController {
     card2.setList(list2);
     card3.setList(list3);
 
-    list1.setBoard(board);
-    list2.setBoard(board);
-    list3.setBoard(board);
+    list1.setBoard(manualBoard);
+    list2.setBoard(manualBoard);
+    list3.setBoard(manualBoard);
 
-    return board;
+    return manualBoard;
   }
 }
