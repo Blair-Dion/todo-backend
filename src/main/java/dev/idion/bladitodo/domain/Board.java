@@ -11,4 +11,5 @@ public class Board {
   private Long id;
   private String name;
   private java.util.List<List> lists;
+  private java.util.List<Log> logs;
 }
