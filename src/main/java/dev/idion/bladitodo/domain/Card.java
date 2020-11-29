@@ -1,12 +1,12 @@
 package dev.idion.bladitodo.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@NoArgsConstructor
 public class Card {
 
   private Long id;
@@ -17,4 +17,17 @@ public class Card {
   private int order;
   private List list;
   private LocalDateTime archivedDatetime;
+
+  @Builder(setterPrefix = "with")
+  private Card(Long id, String title, String contents, boolean isArchived,
+      User user, int order, List list, LocalDateTime archivedDatetime) {
+    this.id = id;
+    this.title = title;
+    this.contents = contents;
+    this.isArchived = isArchived;
+    this.user = user;
+    this.order = order;
+    this.list = list;
+    this.archivedDatetime = archivedDatetime;
+  }
 }

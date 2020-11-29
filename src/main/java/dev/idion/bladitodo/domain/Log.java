@@ -1,12 +1,12 @@
 package dev.idion.bladitodo.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.idion.bladitodo.domain.type.LogType;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@NoArgsConstructor
 public class Log {
 
   private Long id;
@@ -16,4 +16,16 @@ public class Log {
   private Long fromListId;
   private Long toListId;
   private Board board;
+
+  @Builder(setterPrefix = "with")
+  private Log(Long id, LogType type, String beforeContents, String afterContents,
+      Long fromListId, Long toListId, Board board) {
+    this.id = id;
+    this.type = type;
+    this.beforeContents = beforeContents;
+    this.afterContents = afterContents;
+    this.fromListId = fromListId;
+    this.toListId = toListId;
+    this.board = board;
+  }
 }

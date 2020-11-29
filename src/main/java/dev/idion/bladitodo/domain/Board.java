@@ -1,15 +1,24 @@
 package dev.idion.bladitodo.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@NoArgsConstructor
 public class Board {
 
   private Long id;
   private String name;
   private java.util.List<List> lists;
   private java.util.List<Log> logs;
+
+  @Builder(setterPrefix = "with")
+  private Board(Long id, String name, java.util.List<List> lists,
+      java.util.List<Log> logs) {
+    this.id = id;
+    this.name = name;
+    this.lists = lists;
+    this.logs = logs;
+  }
 }

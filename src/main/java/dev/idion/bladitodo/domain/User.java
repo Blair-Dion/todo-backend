@@ -1,11 +1,11 @@
 package dev.idion.bladitodo.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@NoArgsConstructor
 public class User {
 
   private Long id;
@@ -14,4 +14,15 @@ public class User {
   private String userName;
   private String userNickname;
   private String githubToken;
+
+  @Builder(setterPrefix = "with")
+  private User(Long id, String profileImageUrl, String userId, String userName,
+      String userNickname, String githubToken) {
+    this.id = id;
+    this.profileImageUrl = profileImageUrl;
+    this.userId = userId;
+    this.userName = userName;
+    this.userNickname = userNickname;
+    this.githubToken = githubToken;
+  }
 }
