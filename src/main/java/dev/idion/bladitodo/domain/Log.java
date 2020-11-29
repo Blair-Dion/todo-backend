@@ -28,4 +28,15 @@ public class Log {
     this.toListId = toListId;
     this.board = board;
   }
+
+  public void setBoard(Board board) {
+    if (this.board != null) {
+      this.board.getLogs().remove(this);
+    }
+    this.board = board;
+
+    if (this.board != null && !this.board.getLogs().contains(this)) {
+      this.board.getLogs().add(this);
+    }
+  }
 }

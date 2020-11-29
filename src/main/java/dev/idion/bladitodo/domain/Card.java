@@ -30,4 +30,16 @@ public class Card {
     this.isArchived = true;
     this.archivedDatetime = LocalDateTime.now();
   }
+
+
+  public void setList(List list) {
+    if (this.list != null) {
+      this.list.getCards().remove(this);
+    }
+    this.list = list;
+
+    if (this.list != null && !this.list.getCards().contains(this)) {
+      this.list.getCards().add(this);
+    }
+  }
 }

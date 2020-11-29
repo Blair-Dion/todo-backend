@@ -25,12 +25,19 @@ public class List {
     this.board = board;
   }
 
-  public void addCard(Card card) {
-    this.cards.add(card);
-  }
-
   public void archiveList() {
     this.isArchived = true;
     this.archivedDatetime = LocalDateTime.now();
+  }
+
+  public void setBoard(Board board) {
+    if (this.board != null) {
+      this.board.getLists().remove(this);
+    }
+    this.board = board;
+
+    if (this.board != null && !this.board.getLists().contains(this)) {
+      this.board.getLists().add(this);
+    }
   }
 }

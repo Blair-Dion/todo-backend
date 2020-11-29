@@ -19,12 +19,4 @@ public class Board {
     this.id = id;
     this.name = name;
   }
-
-  public void addList(List list) {
-    this.lists.add(list);
-  }
-
-  public void addLog(Log log) {
-    this.logs.add(log);
-  }
 }
