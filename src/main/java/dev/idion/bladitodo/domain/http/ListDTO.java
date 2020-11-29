@@ -14,18 +14,16 @@ public class ListDTO {
   private Long id;
   private String name;
   private boolean isArchived;
-  private int order;
   private Long boardId;
   private LocalDateTime archivedDatetime;
   private java.util.List<CardDTO> cards;
 
   @Builder(setterPrefix = "with")
-  private ListDTO(Long id, String name, boolean isArchived, int order, Long boardId,
+  private ListDTO(Long id, String name, boolean isArchived, Long boardId,
       LocalDateTime archivedDatetime, java.util.List<CardDTO> cards) {
     this.id = id;
     this.name = name;
     this.isArchived = isArchived;
-    this.order = order;
     this.boardId = boardId;
     this.archivedDatetime = archivedDatetime;
     this.cards = cards;
@@ -36,7 +34,6 @@ public class ListDTO {
         .withId(list.getId())
         .withName(list.getName())
         .withIsArchived(list.isArchived())
-        .withOrder(list.getOrder())
         .withBoardId(list.getBoard().getId())
         .withArchivedDatetime(list.getArchivedDatetime())
         .withCards(list.getCards()
