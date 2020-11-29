@@ -6,6 +6,7 @@ import dev.idion.bladitodo.domain.List;
 import dev.idion.bladitodo.domain.User;
 import dev.idion.bladitodo.domain.http.BoardDTO;
 import dev.idion.bladitodo.domain.http.BoardWithListIdResponse;
+import dev.idion.bladitodo.domain.http.UserDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,20 @@ public class MockAPIController {
   public BoardDTO getBoardDTO(@PathVariable Long boardId) {
     Board board = makeBoard(boardId);
     return BoardDTO.from(board);
+  }
+
+  @GetMapping("/v1/user/{userId}")
+  public UserDTO getUserDTO(@PathVariable Long userId) {
+    User user = User.builder()
+        .withId(userId)
+        .withProfileImageUrl(
+            "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4")
+        .withGithubToken("token")
+        .withUserId("ksundong")
+        .withUserNickname("Dion")
+        .build();
+
+    return UserDTO.from(user);
   }
 
   private Board makeBoard(Long boardId) {
