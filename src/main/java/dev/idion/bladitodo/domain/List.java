@@ -11,7 +11,7 @@ public class List {
 
   private Long id;
   private String name;
-  private boolean isArchived;
+  private boolean isArchived = false;
   private int order;
   private Board board;
   private LocalDateTime archivedDatetime;
