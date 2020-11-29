@@ -12,7 +12,7 @@ public class Card {
   private Long id;
   private String title;
   private String contents;
-  private boolean isArchived;
+  private boolean isArchived = false;
   private User user;
   private int order;
   private List list;
