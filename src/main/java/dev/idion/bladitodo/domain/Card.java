@@ -14,20 +14,20 @@ public class Card {
   private String contents;
   private boolean isArchived = false;
   private User user;
-  private int order;
   private List list;
-  private LocalDateTime archivedDatetime;
+  private LocalDateTime archivedDatetime = null;
 
   @Builder(setterPrefix = "with")
-  private Card(Long id, String title, String contents, boolean isArchived,
-      User user, int order, List list, LocalDateTime archivedDatetime) {
+  private Card(Long id, String title, String contents, User user, List list) {
     this.id = id;
     this.title = title;
     this.contents = contents;
-    this.isArchived = isArchived;
     this.user = user;
-    this.order = order;
     this.list = list;
-    this.archivedDatetime = archivedDatetime;
+  }
+
+  public void archiveCard() {
+    this.isArchived = true;
+    this.archivedDatetime = LocalDateTime.now();
   }
 }

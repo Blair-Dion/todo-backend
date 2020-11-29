@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain;
 
+import java.util.ArrayList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,15 +11,20 @@ public class Board {
 
   private Long id;
   private String name;
-  private java.util.List<List> lists;
-  private java.util.List<Log> logs;
+  private final java.util.List<List> lists = new ArrayList<>();
+  private final java.util.List<Log> logs = new ArrayList<>();
 
   @Builder(setterPrefix = "with")
-  private Board(Long id, String name, java.util.List<List> lists,
-      java.util.List<Log> logs) {
+  private Board(Long id, String name) {
     this.id = id;
     this.name = name;
-    this.lists = lists;
-    this.logs = logs;
+  }
+
+  public void addList(List list) {
+    this.lists.add(list);
+  }
+
+  public void addLog(Log log) {
+    this.logs.add(log);
   }
 }

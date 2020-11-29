@@ -1,6 +1,7 @@
 package dev.idion.bladitodo.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,21 +13,24 @@ public class List {
   private Long id;
   private String name;
   private boolean isArchived = false;
-  private int order;
   private Board board;
-  private LocalDateTime archivedDatetime;
-  private java.util.List<Card> cards;
+  private final java.util.List<Card> cards = new ArrayList<>();
+  private LocalDateTime archivedDatetime = null;
 
   @Builder(setterPrefix = "with")
-  private List(Long id, String name, boolean isArchived, int order,
-      Board board, LocalDateTime archivedDatetime,
-      java.util.List<Card> cards) {
+  private List(Long id, String name, boolean isArchived, Board board) {
     this.id = id;
     this.name = name;
     this.isArchived = isArchived;
-    this.order = order;
     this.board = board;
-    this.archivedDatetime = archivedDatetime;
-    this.cards = cards;
+  }
+
+  public void addCard(Card card) {
+    this.cards.add(card);
+  }
+
+  public void archiveList() {
+    this.isArchived = true;
+    this.archivedDatetime = LocalDateTime.now();
   }
 }
