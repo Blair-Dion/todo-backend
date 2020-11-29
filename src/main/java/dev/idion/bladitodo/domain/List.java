@@ -14,5 +14,6 @@ public class List {
   private boolean isArchived;
   private int order;
   private Board board;
-  private LocalDateTime archivedDateTime;
+  private LocalDateTime archivedDatetime;
+  private java.util.List<Card> cards;
 }
