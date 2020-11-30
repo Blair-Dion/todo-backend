@@ -1,0 +1,117 @@
+= BlaDi Todo API Docs
+Dion[idion@idion.dev]
+1.0.0, 2020/11/30
+:doctype: book
+:sectlinks:
+:docinfo: shared-head
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectnums:
+
+== Mock API
+
+=== GET Board (v1)
+
+==== CURL
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/curl-request.adoc[]
+
+==== HTTPie
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/httpie-request.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/http-request.adoc[]
+
+==== HTTP Request Path Parameters
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/mock-api-controller-test/get-board-with-list-id-of-test/response-fields.adoc[]
+
+=== GET Board (v2)
+
+==== CURL
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/curl-request.adoc[]
+
+==== HTTPie
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/httpie-request.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/http-request.adoc[]
+
+==== HTTP Request Path Parameters
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/mock-api-controller-test/get-board-dto-test/response-fields.adoc[]
+
+=== GET User (v1)
+
+==== CURL
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/curl-request.adoc[]
+
+==== HTTPie
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/httpie-request.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/http-request.adoc[]
+
+==== HTTP Request Path Parameters
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/mock-api-controller-test/get-user-dto-test/response-fields.adoc[]
+
+=== GET List (v1)
+
+==== CURL
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/curl-request.adoc[]
+
+==== HTTPie
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/httpie-request.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/http-request.adoc[]
+
+==== HTTP Request Path Parameters
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/mock-api-controller-test/get-list-dto-test/response-fields.adoc[]
