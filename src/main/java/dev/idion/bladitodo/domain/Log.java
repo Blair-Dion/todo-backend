@@ -1,20 +1,40 @@
 package dev.idion.bladitodo.domain;
 
 import dev.idion.bladitodo.domain.type.LogType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString(of = {"id", "type", "beforeContents", "afterContents", "fromListId", "toListId", "board"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Log {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Enumerated(EnumType.STRING)
   private LogType type;
+
   private String beforeContents;
   private String afterContents;
   private Long fromListId;
   private Long toListId;
+
+  @ManyToOne
+  @JoinColumn(name = "board_id")
   private Board board;
 
   @Builder(setterPrefix = "with")

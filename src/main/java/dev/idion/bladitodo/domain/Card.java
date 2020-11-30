@@ -1,20 +1,40 @@
 package dev.idion.bladitodo.domain;
 
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString(of = {"id", "title", "contents", "isArchived", "user", "list", "archivedDatetime"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Card {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String title;
   private String contents;
   private boolean isArchived;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
   private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "list_id")
   private List list;
+
   private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
@@ -30,7 +50,6 @@ public class Card {
     this.isArchived = true;
     this.archivedDatetime = LocalDateTime.now();
   }
-
 
   public void setList(List list) {
     if (this.list != null) {

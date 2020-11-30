@@ -1,18 +1,31 @@
 package dev.idion.bladitodo.domain;
 
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString(of = {"id", "name"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Board {
 
-  private Long id;
-  private String name;
+  @OneToMany(mappedBy = "board")
   private final java.util.List<List> lists = new ArrayList<>();
+  @OneToMany(mappedBy = "board")
   private final java.util.List<Log> logs = new ArrayList<>();
+  private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Builder(setterPrefix = "with")
   private Board(Long id, String name) {
