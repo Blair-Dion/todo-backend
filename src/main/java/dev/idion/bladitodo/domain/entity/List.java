@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString(of = {"id", "name", "isArchived", "board", "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class List {
+public class List extends BaseEntity {
 
   @OneToMany(mappedBy = "list")
   private final java.util.List<Card> cards = new ArrayList<>();

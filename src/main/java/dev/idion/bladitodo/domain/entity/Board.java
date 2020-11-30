@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString(of = {"id", "name"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Board {
+public class Board extends BaseEntity {
 
   @OneToMany(mappedBy = "board")
   private final java.util.List<List> lists = new ArrayList<>();

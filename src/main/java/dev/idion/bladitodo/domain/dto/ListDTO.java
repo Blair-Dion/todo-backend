@@ -2,6 +2,7 @@ package dev.idion.bladitodo.domain.dto;
 
 import dev.idion.bladitodo.domain.entity.List;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class ListDTO {
   private boolean isArchived;
   private Long boardId;
   private LocalDateTime archivedDatetime;
-  private java.util.List<CardDTO> cards;
+  private java.util.List<CardDTO> cards = new ArrayList<>();
 
   @Builder(setterPrefix = "with")
   private ListDTO(Long id, String name, boolean isArchived, Long boardId,

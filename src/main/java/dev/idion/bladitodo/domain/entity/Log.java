@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString(of = {"id", "type", "beforeContents", "afterContents", "fromListId", "toListId", "board"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Log {
+public class Log extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
