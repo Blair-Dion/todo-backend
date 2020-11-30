@@ -13,16 +13,13 @@ public class UserDTO {
   private String profileImageUrl;
   private String userId;
   private String userNickname;
-  private String githubToken;
 
   @Builder(setterPrefix = "with")
-  private UserDTO(Long id, String profileImageUrl, String userId, String userNickname,
-      String githubToken) {
+  private UserDTO(Long id, String profileImageUrl, String userId, String userNickname) {
     this.id = id;
     this.profileImageUrl = profileImageUrl;
     this.userId = userId;
     this.userNickname = userNickname;
-    this.githubToken = githubToken;
   }
 
   public static UserDTO from(User user) {
@@ -30,7 +27,6 @@ public class UserDTO {
         .withId(user.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
-        .withGithubToken(user.getGithubToken())
         .withUserNickname(user.getUserNickname())
         .build();
   }
