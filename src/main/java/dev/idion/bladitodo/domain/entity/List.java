@@ -1,20 +1,38 @@
-package dev.idion.bladitodo.domain;
+package dev.idion.bladitodo.domain.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
-public class List {
+@ToString(of = {"id", "name", "isArchived", "board", "archivedDatetime"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class List extends BaseEntity {
 
-  private Long id;
+  @OneToMany(mappedBy = "list")
+  private final java.util.List<Card> cards = new ArrayList<>();
+
   private String name;
   private boolean isArchived;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  @ManyToOne
+  @JoinColumn(name = "board_id")
   private Board board;
-  private final java.util.List<Card> cards = new ArrayList<>();
+
   private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")

@@ -1,6 +1,6 @@
-package dev.idion.bladitodo.domain.http;
+package dev.idion.bladitodo.domain.dto;
 
-import dev.idion.bladitodo.domain.User;
+import dev.idion.bladitodo.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
