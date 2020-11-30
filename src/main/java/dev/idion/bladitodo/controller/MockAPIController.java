@@ -1,13 +1,13 @@
 package dev.idion.bladitodo.controller;
 
-import dev.idion.bladitodo.domain.Board;
-import dev.idion.bladitodo.domain.Card;
-import dev.idion.bladitodo.domain.List;
-import dev.idion.bladitodo.domain.User;
-import dev.idion.bladitodo.domain.http.BoardDTO;
-import dev.idion.bladitodo.domain.http.BoardWithListIdResponse;
-import dev.idion.bladitodo.domain.http.ListDTO;
-import dev.idion.bladitodo.domain.http.UserDTO;
+import dev.idion.bladitodo.domain.dto.BoardDTO;
+import dev.idion.bladitodo.domain.dto.BoardWithListIdResponse;
+import dev.idion.bladitodo.domain.dto.ListDTO;
+import dev.idion.bladitodo.domain.dto.UserDTO;
+import dev.idion.bladitodo.domain.entity.Board;
+import dev.idion.bladitodo.domain.entity.Card;
+import dev.idion.bladitodo.domain.entity.List;
+import dev.idion.bladitodo.domain.entity.User;
 import javax.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

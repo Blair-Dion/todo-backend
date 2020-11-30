@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain.type;
+package dev.idion.bladitodo.domain.entity;
 
 public enum LogType {
   CARD_ADD,

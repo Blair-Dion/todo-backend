@@ -1,6 +1,6 @@
-package dev.idion.bladitodo.domain.http;
+package dev.idion.bladitodo.domain.dto;
 
-import dev.idion.bladitodo.domain.Board;
+import dev.idion.bladitodo.domain.entity.Board;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;

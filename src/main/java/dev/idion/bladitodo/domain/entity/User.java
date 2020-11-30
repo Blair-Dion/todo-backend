@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain;
+package dev.idion.bladitodo.domain.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

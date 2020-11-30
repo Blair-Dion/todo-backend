@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain;
+package dev.idion.bladitodo.domain.entity;
 
 import java.util.ArrayList;
 import javax.persistence.Entity;

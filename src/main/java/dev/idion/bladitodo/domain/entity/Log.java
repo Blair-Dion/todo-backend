@@ -1,6 +1,5 @@
-package dev.idion.bladitodo.domain;
+package dev.idion.bladitodo.domain.entity;
 
-import dev.idion.bladitodo.domain.type.LogType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
