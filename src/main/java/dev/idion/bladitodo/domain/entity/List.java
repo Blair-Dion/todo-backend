@@ -21,19 +21,20 @@ import lombok.ToString;
 @Entity
 public class List extends BaseEntity {
 
-  @OneToMany(mappedBy = "list")
-  private final java.util.List<Card> cards = new ArrayList<>();
-
-  private String name;
-  private boolean isArchived;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  private String name;
+  private LocalDateTime archivedDatetime;
+  private boolean isArchived;
+
+  @OneToMany(mappedBy = "list")
+  private final java.util.List<Card> cards = new ArrayList<>();
+
   @ManyToOne
   @JoinColumn(name = "board_id")
   private Board board;
-
-  private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
   private List(Long id, String name, boolean isArchived, Board board) {
