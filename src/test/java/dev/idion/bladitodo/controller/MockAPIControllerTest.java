@@ -40,9 +40,9 @@ class MockAPIControllerTest {
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             responseFields(
-                fieldWithPath("board_id").description("해당 보드의 DB id").type(JsonFieldType.NUMBER),
-                fieldWithPath("name").description("해당 보드의 이름").type(JsonFieldType.STRING),
-                fieldWithPath("list_ids").description("해당 보드의 리스트 id 목록").type(JsonFieldType.ARRAY)
+                fieldWithPath("board_id").description("보드의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("name").description("보드의 이름").type(JsonFieldType.STRING),
+                fieldWithPath("list_ids").description("보드의 리스트 id 목록").type(JsonFieldType.ARRAY)
             )));
   }
 
@@ -56,9 +56,9 @@ class MockAPIControllerTest {
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             responseFields(
-                fieldWithPath("id").description("해당 보드의 DB id").type(JsonFieldType.NUMBER),
-                fieldWithPath("name").description("해당 보드의 이름").type(JsonFieldType.STRING),
-                fieldWithPath("lists").description("해당 보드의 리스트 목록").type(JsonFieldType.ARRAY),
+                fieldWithPath("id").description("보드의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("name").description("보드의 이름").type(JsonFieldType.STRING),
+                fieldWithPath("lists").description("보드의 리스트 목록").type(JsonFieldType.ARRAY),
                 fieldWithPath("lists[].id").description("리스트의 DB id").type(JsonFieldType.NUMBER),
                 fieldWithPath("lists[].name").description("리스트의 이름").type(JsonFieldType.STRING),
                 fieldWithPath("lists[].board_id").description("리스트가 속한 보드의 DB id")
@@ -89,8 +89,21 @@ class MockAPIControllerTest {
   }
 
   @Test
-  void getUserDTOTest() {
-    fail("Not Implemented");
+  @DisplayName("Mock API user v1 테스트")
+  void getUserDTOTest() throws Exception {
+    mockMvc.perform(get(PRE_URI + "/v1/user/1").contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andDo(document("{class-name}/{method-name}",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            responseFields(
+                fieldWithPath("id").description("유저의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("profile_image_url").description("유저의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("user_id").description("유저의 아이디").type(JsonFieldType.STRING),
+                fieldWithPath("user_nickname").description("유저의 닉네임").type(JsonFieldType.STRING)
+            )));
   }
 
   @Test
