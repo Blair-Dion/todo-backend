@@ -19,11 +19,12 @@ VALUES ('콩이 놀아주기', '재밌게 놀아주기', false, null, 1, 1, NOW(
        ('Todo Project', '이번주까지 열심히 만들기', false, null, 2, 1, NOW(), 1, NOW(), 1),
        ('취업하기', '성장할 수 있는 회사가기', false, null, 3, 1, NOW(), 1, NOW(), 1);
 
-INSERT INTO log (type, before_contents, after_contents, from_list_id, to_list_id, board_id,
+INSERT INTO log (type, before_title, after_title, before_contents, after_contents, from_list_id,
+                 to_list_id, board_id,
                  created_datetime, created_by, updated_datetime, updated_by)
-VALUES ('LIST_ADD', null, null, null, 1, 1, NOW(), 1, NOW(), 1),
-       ('LIST_ADD', null, null, null, 2, 1, NOW(), 1, NOW(), 1),
-       ('LIST_ADD', null, null, null, 3, 1, NOW(), 1, NOW(), 1),
-       ('CARD_ADD', null, '재밌게 놀아주기', 1, 1, 1, NOW(), 1, NOW(), 1),
-       ('CARD_ADD', null, '이번주까지 열심히 만들기', 2, 2, 1, NOW(), 1, NOW(), 1),
-       ('CARD_ADD', null, '성장할 수 있는 회사가기', 3, 3, 1, NOW(), 1, NOW(), 1);
+VALUES ('LIST_ADD', null, null, null, null, null, 1, 1, NOW(), 1, NOW(), 1),
+       ('LIST_ADD', null, null, null, null, null, 2, 1, NOW(), 1, NOW(), 1),
+       ('LIST_ADD', null, null, null, null, null, 3, 1, NOW(), 1, NOW(), 1),
+       ('CARD_ADD', null, '콩이 놀아주기', null, '재밌게 놀아주기', 1, 1, 1, NOW(), 1, NOW(), 1),
+       ('CARD_ADD', null, 'Todo Project', null, '이번주까지 열심히 만들기', 2, 2, 1, NOW(), 1, NOW(), 1),
+       ('CARD_ADD', null, '취업하기', null, '성장할 수 있는 회사가기', 3, 3, 1, NOW(), 1, NOW(), 1);
