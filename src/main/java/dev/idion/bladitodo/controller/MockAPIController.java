@@ -1,10 +1,10 @@
 package dev.idion.bladitodo.controller;
 
-import dev.idion.bladitodo.domain.dto.BoardDTO;
-import dev.idion.bladitodo.domain.dto.BoardWithListIdResponse;
-import dev.idion.bladitodo.domain.dto.CardDTO;
-import dev.idion.bladitodo.domain.dto.ListDTO;
-import dev.idion.bladitodo.domain.dto.UserDTO;
+import dev.idion.bladitodo.controller.dto.BoardDTO;
+import dev.idion.bladitodo.controller.dto.BoardWithListIdResponse;
+import dev.idion.bladitodo.controller.dto.CardDTO;
+import dev.idion.bladitodo.controller.dto.ListDTO;
+import dev.idion.bladitodo.controller.dto.UserDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.springframework.web.bind.annotation.GetMapping;

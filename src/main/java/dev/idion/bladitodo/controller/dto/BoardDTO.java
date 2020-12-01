@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain.dto;
+package dev.idion.bladitodo.controller.dto;
 
 import dev.idion.bladitodo.domain.entity.Board;
 import java.util.ArrayList;
