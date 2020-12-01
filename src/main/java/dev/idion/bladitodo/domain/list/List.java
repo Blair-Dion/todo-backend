@@ -1,6 +1,8 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.list;
 
 import dev.idion.bladitodo.domain.board.Board;
+import dev.idion.bladitodo.domain.entity.BaseEntity;
+import dev.idion.bladitodo.domain.entity.Card;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.persistence.Entity;

@@ -1,6 +1,6 @@
 package dev.idion.bladitodo.web.dto;
 
-import dev.idion.bladitodo.domain.entity.List;
+import dev.idion.bladitodo.domain.list.List;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;

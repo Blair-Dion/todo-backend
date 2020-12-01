@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain.entity;
 
+import dev.idion.bladitodo.domain.list.List;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
