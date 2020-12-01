@@ -1,6 +1,6 @@
 package dev.idion.bladitodo.domain.card;
 
-import dev.idion.bladitodo.domain.entity.BaseEntity;
+import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.user.User;
 import java.time.LocalDateTime;

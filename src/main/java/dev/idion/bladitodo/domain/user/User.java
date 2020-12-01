@@ -1,6 +1,6 @@
 package dev.idion.bladitodo.domain.user;
 
-import dev.idion.bladitodo.domain.entity.BaseTimeEntity;
+import dev.idion.bladitodo.domain.base.BaseTimeEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

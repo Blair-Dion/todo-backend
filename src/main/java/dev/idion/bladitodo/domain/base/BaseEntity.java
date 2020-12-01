@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.base;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;

@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.base;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
