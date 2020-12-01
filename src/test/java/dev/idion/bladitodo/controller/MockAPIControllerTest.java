@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@AutoConfigureRestDocs(uriHost = "52.78.241.12/api", uriPort = 80)
+@AutoConfigureRestDocs(uriHost = "54.180.198.188/api", uriPort = 80)
 @WebMvcTest(controllers = {MockAPIController.class})
 @DisplayName("Mock API 테스트")
 class MockAPIControllerTest {
