@@ -1,7 +1,7 @@
-package dev.idion.bladitodo.domain.dto;
+package dev.idion.bladitodo.web.dto;
 
-import dev.idion.bladitodo.domain.entity.Board;
-import dev.idion.bladitodo.domain.entity.List;
+import dev.idion.bladitodo.domain.board.Board;
+import dev.idion.bladitodo.domain.list.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.Builder;

@@ -1,5 +1,8 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.list;
 
+import dev.idion.bladitodo.domain.base.BaseEntity;
+import dev.idion.bladitodo.domain.board.Board;
+import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.persistence.Entity;
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "name", "isArchived", "board", "archivedDatetime"})
+@ToString(callSuper = true, of = {"id", "name", "isArchived", "board", "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class List extends BaseEntity {

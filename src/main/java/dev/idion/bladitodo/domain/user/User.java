@@ -1,5 +1,6 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.user;
 
+import dev.idion.bladitodo.domain.base.BaseTimeEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "profileImageUrl", "userId", "userNickname", "githubToken"})
+@ToString(callSuper = true, of = {"id", "profileImageUrl", "userId", "userNickname", "githubToken"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User extends BaseTimeEntity {

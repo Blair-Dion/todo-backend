@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: dev
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57InnoDBDialect
+        format_sql: true
 logging:
   level:
     web: debug
@@ -13,17 +18,14 @@ spring:
   config:
     activate:
       on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
   datasource:
-    url: jdbc:h2:mem:bladi-todo
+    url: jdbc:h2:mem:todo;MODE=MySQL;DATABASE_TO_LOWER=TRUE
     username: sa
     password:
     initialization-mode: embedded
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
   h2:
     console:
       enabled: true
@@ -41,9 +43,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        format_sql: true
 
 ---
 

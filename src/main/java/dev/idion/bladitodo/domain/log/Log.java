@@ -1,5 +1,7 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.log;
 
+import dev.idion.bladitodo.domain.base.BaseEntity;
+import dev.idion.bladitodo.domain.board.Board;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,8 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "type", "beforeTitle", "afterTitle", "beforeContents", "afterContents",
-    "fromListId", "toListId", "board"})
+@ToString(callSuper = true, of = {"id", "type", "beforeTitle", "afterTitle", "beforeContents",
+    "afterContents", "fromListId", "toListId", "board"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Log extends BaseEntity {

@@ -1,6 +1,6 @@
-package dev.idion.bladitodo.domain.dto;
+package dev.idion.bladitodo.web.dto;
 
-import dev.idion.bladitodo.domain.entity.Card;
+import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,5 +1,8 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.board;
 
+import dev.idion.bladitodo.domain.base.BaseEntity;
+import dev.idion.bladitodo.domain.list.List;
+import dev.idion.bladitodo.domain.log.Log;
 import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "name"})
+@ToString(callSuper = true, of = {"id", "name"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Board extends BaseEntity {
