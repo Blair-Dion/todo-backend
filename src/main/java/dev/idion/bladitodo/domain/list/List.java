@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "name", "isArchived", "board", "archivedDatetime"})
+@ToString(callSuper = true, of = {"id", "name", "isArchived", "board", "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class List extends BaseEntity {

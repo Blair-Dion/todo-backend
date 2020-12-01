@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "profileImageUrl", "userId", "userNickname", "githubToken"})
+@ToString(callSuper = true, of = {"id", "profileImageUrl", "userId", "userNickname", "githubToken"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User extends BaseTimeEntity {

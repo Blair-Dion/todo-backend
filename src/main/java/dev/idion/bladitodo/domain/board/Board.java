@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "name"})
+@ToString(callSuper = true, of = {"id", "name"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Board extends BaseEntity {

@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "type", "beforeTitle", "afterTitle", "beforeContents", "afterContents",
-    "fromListId", "toListId", "board"})
+@ToString(callSuper = true, of = {"id", "type", "beforeTitle", "afterTitle", "beforeContents",
+    "afterContents", "fromListId", "toListId", "board"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Log extends BaseEntity {

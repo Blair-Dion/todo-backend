@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "title", "contents", "isArchived", "user", "list", "archivedDatetime"})
+@ToString(callSuper = true, of = {"id", "title", "contents", "isArchived", "user", "list",
+    "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Card extends BaseEntity {
