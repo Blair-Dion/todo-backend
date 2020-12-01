@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"id", "type", "beforeContents", "afterContents", "fromListId", "toListId", "board"})
+@ToString(of = {"id", "type", "beforeTitle", "afterTitle", "beforeContents", "afterContents",
+    "fromListId", "toListId", "board"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Log extends BaseEntity {
@@ -27,6 +28,8 @@ public class Log extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private LogType type;
 
+  private String beforeTitle;
+  private String afterTitle;
   private String beforeContents;
   private String afterContents;
   private Long fromListId;
@@ -37,10 +40,12 @@ public class Log extends BaseEntity {
   private Board board;
 
   @Builder(setterPrefix = "with")
-  private Log(Long id, LogType type, String beforeContents, String afterContents,
-      Long fromListId, Long toListId, Board board) {
+  private Log(Long id, LogType type, String beforeTitle, String afterTitle, String beforeContents,
+      String afterContents, Long fromListId, Long toListId, Board board) {
     this.id = id;
     this.type = type;
+    this.beforeTitle = beforeTitle;
+    this.afterTitle = afterTitle;
     this.beforeContents = beforeContents;
     this.afterContents = afterContents;
     this.fromListId = fromListId;
