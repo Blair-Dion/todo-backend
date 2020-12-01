@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain.entity;
 
+import dev.idion.bladitodo.domain.board.Board;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

@@ -1,5 +1,8 @@
-package dev.idion.bladitodo.domain.entity;
+package dev.idion.bladitodo.domain.board;
 
+import dev.idion.bladitodo.domain.entity.BaseEntity;
+import dev.idion.bladitodo.domain.entity.List;
+import dev.idion.bladitodo.domain.entity.Log;
 import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

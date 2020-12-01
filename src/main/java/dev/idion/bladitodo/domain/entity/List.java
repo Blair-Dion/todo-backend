@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain.entity;
 
+import dev.idion.bladitodo.domain.board.Board;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.persistence.Entity;
