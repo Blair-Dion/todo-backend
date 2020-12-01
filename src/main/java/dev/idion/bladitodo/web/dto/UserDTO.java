@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.controller.dto;
+package dev.idion.bladitodo.web.dto;
 
 import dev.idion.bladitodo.domain.entity.User;
 import lombok.Builder;
