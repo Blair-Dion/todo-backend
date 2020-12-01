@@ -1,8 +1,8 @@
 package dev.idion.bladitodo.domain.card;
 
 import dev.idion.bladitodo.domain.entity.BaseEntity;
-import dev.idion.bladitodo.domain.entity.User;
 import dev.idion.bladitodo.domain.list.List;
+import dev.idion.bladitodo.domain.user.User;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
