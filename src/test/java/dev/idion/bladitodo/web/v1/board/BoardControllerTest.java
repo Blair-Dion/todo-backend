@@ -30,7 +30,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs(uriHost = "54.180.198.188/api", uriPort = 80)
-@WebMvcTest
+@WebMvcTest(controllers = {BoardController.class})
 @DisplayName("v1 Board API 테스트")
 class BoardControllerTest {
 

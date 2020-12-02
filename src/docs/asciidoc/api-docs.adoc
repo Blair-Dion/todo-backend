@@ -1,6 +1,6 @@
 = BlaDi Todo API Docs
 Dion[idion@idion.dev]
-1.0.0, 2020/12/02
+1.0.1, 2020/12/02
 :doctype: book
 :sectlinks:
 :docinfo: shared-head
@@ -14,28 +14,62 @@ Dion[idion@idion.dev]
 
 == v1 API
 
-=== GET Board
+=== Board
 
-==== CURL
+==== GET Board
+
+===== CURL
 
 include::{snippets}/board-controller-test/get-board-dto-test/curl-request.adoc[]
 
-==== HTTPie
+===== HTTPie
 
 include::{snippets}/board-controller-test/get-board-dto-test/httpie-request.adoc[]
 
-==== HTTP Request
+===== HTTP Request
 
 include::{snippets}/board-controller-test/get-board-dto-test/http-request.adoc[]
 
-==== HTTP Request Path Parameters
+===== HTTP Request Path Parameters
 
 include::{snippets}/board-controller-test/get-board-dto-test/path-parameters.adoc[]
 
-==== HTTP Response
+===== HTTP Response
 
 include::{snippets}/board-controller-test/get-board-dto-test/http-response.adoc[]
 
-==== Response Fields
+===== HTTP Response Fields
 
 include::{snippets}/board-controller-test/get-board-dto-test/response-fields.adoc[]
+
+=== Card
+
+==== POST Card
+
+===== CURL
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/path-parameters.adoc[]
+
+===== HTTP Request Fields
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/request-fields.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/response-fields.adoc[]
