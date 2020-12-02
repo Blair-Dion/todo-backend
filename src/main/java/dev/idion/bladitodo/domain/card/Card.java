@@ -42,8 +42,7 @@ public class Card extends BaseEntity {
   private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
-  private Card(Long id, String title, String contents, User user, List list) {
-    this.id = id;
+  private Card(String title, String contents, User user, List list) {
     this.title = title;
     this.contents = contents;
     this.user = user;

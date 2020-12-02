@@ -42,9 +42,8 @@ public class Log extends BaseEntity {
   private Board board;
 
   @Builder(setterPrefix = "with")
-  private Log(Long id, LogType type, String beforeTitle, String afterTitle, String beforeContents,
+  private Log(LogType type, String beforeTitle, String afterTitle, String beforeContents,
       String afterContents, Long fromListId, Long toListId, Board board) {
-    this.id = id;
     this.type = type;
     this.beforeTitle = beforeTitle;
     this.afterTitle = afterTitle;
