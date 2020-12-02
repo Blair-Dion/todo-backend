@@ -76,4 +76,22 @@ public class CardService {
 
     return CardDTO.from(card);
   }
+
+  public void archiveCard(Long listId, Long cardId) {
+    Card card = cardRepository.findById(cardId).orElseThrow(RuntimeException::new);
+    String beforeTitle = card.getTitle();
+    String beforeContents = card.getContents();
+    log.debug("보관할 카드 정보: {}", card);
+    card.archiveCard();
+    cardRepository.save(card);
+
+    Log cardArchiveLog = Log.builder()
+        .withType(LogType.CARD_ARCHIVE)
+        .withFromListId(listId)
+        .withBeforeTitle(beforeTitle)
+        .withBeforeContents(beforeContents)
+        .withBoard(card.getList().getBoard())
+        .build();
+    logRepository.save(cardArchiveLog);
+  }
 }
