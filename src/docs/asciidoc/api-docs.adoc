@@ -7,7 +7,7 @@ Dion[idion@idion.dev]
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:toclevels: 3
 :sectnums:
 
 == 변경사항
@@ -16,7 +16,7 @@ Dion[idion@idion.dev]
 
 === Board
 
-==== GET Board
+==== GET Board: 보드 조회 API
 
 ===== CURL
 
@@ -44,7 +44,7 @@ include::{snippets}/board-controller-test/get-board-dto-test/response-fields.ado
 
 === Card
 
-==== POST Card
+==== POST Card: 카드 생성 API
 
 ===== CURL
 
@@ -73,3 +73,33 @@ include::{snippets}/card-controller-test/card_생성_api_테스트/http-response
 ===== HTTP Response Fields
 
 include::{snippets}/card-controller-test/card_생성_api_테스트/response-fields.adoc[]
+
+==== PUT Card: 카드 수정 API
+
+===== CURL
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/path-parameters.adoc[]
+
+===== HTTP Request Fields
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/request-fields.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/response-fields.adoc[]
