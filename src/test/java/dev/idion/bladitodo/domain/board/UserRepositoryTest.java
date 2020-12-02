@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.idion.bladitodo.domain.user.User;
 import dev.idion.bladitodo.domain.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,6 +17,16 @@ class UserRepositoryTest {
 
   @Autowired
   private UserRepository userRepository;
+
+  @AfterEach
+  void cleanUp() {
+    userRepository.deleteAll();
+  }
+
+  @Test
+  void 주입된_빈_null_확인_테스트() {
+    assertThat(userRepository).isNotNull();
+  }
 
   @Test
   void user_추가_테스트() {
