@@ -21,18 +21,20 @@ import lombok.ToString;
 @Entity
 public class Board extends BaseEntity {
 
-  @OneToMany(mappedBy = "board")
-  private final java.util.List<List> lists = new ArrayList<>();
-  @OneToMany(mappedBy = "board")
-  private final java.util.List<Log> logs = new ArrayList<>();
-  private String name;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private String name;
+
+  @OneToMany(mappedBy = "board")
+  private final java.util.List<List> lists = new ArrayList<>();
+
+  @OneToMany(mappedBy = "board")
+  private final java.util.List<Log> logs = new ArrayList<>();
+
   @Builder(setterPrefix = "with")
-  private Board(Long id, String name) {
-    this.id = id;
+  private Board(String name) {
     this.name = name;
   }
 }

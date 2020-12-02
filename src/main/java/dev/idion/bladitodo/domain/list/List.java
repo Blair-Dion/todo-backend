@@ -40,8 +40,7 @@ public class List extends BaseEntity {
   private Board board;
 
   @Builder(setterPrefix = "with")
-  private List(Long id, String name, boolean isArchived, Board board) {
-    this.id = id;
+  private List(String name, boolean isArchived, Board board) {
     this.name = name;
     this.isArchived = isArchived;
     this.board = board;

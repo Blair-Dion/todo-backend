@@ -27,9 +27,7 @@ public class User extends BaseTimeEntity {
   private String githubToken;
 
   @Builder(setterPrefix = "with")
-  private User(Long id, String profileImageUrl, String userId, String userNickname,
-      String githubToken) {
-    this.id = id;
+  private User(String profileImageUrl, String userId, String userNickname, String githubToken) {
     this.profileImageUrl = profileImageUrl;
     this.userId = userId;
     this.userNickname = userNickname;
