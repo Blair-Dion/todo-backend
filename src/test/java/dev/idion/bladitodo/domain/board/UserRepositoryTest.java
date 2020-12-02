@@ -30,6 +30,8 @@ class UserRepositoryTest {
 
   @Test
   void user_추가_테스트() {
+    // given
+    final long beforeCount = userRepository.count();
     User user = User.builder()
         .withUserId("blair0404")
         .withUserNickname("Blair")
@@ -37,8 +39,25 @@ class UserRepositoryTest {
         .withGithubToken("token")
         .build();
 
+    // when
     user = userRepository.save(user);
-    System.out.println(user);
-    assertThat(userRepository.count()).isEqualTo(2);
+
+    // then
+    assertThat(user.getId()).isNotNull();
+    assertThat(userRepository.count()).isEqualTo(beforeCount + 1);
+  }
+
+  @Test
+  void user_조회_테스트() {
+    User user = User.builder()
+        .withUserId("blair0404")
+        .withUserNickname("Blair")
+        .withProfileImageUrl("none")
+        .withGithubToken("token")
+        .build();
+    user = userRepository.save(user);
+
+    User user2 = userRepository.findById(user.getId()).orElseThrow(RuntimeException::new);
+    assertThat(user2).isEqualTo(user);
   }
 }
