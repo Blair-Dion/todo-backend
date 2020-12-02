@@ -61,4 +61,17 @@ class UserRepositoryTest {
 
     assertThat(user2).isEqualTo(user1);
   }
+
+  @Test
+  void user_삭제_테스트() {
+    // given
+    final long beforeCount = userRepository.count();
+
+    // when
+    User user1 = userRepository.save(this.user);
+    userRepository.delete(user1);
+
+    // then
+    assertThat(userRepository.count()).isEqualTo(beforeCount);
+  }
 }
