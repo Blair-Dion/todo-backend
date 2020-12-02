@@ -6,6 +6,7 @@ import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +36,7 @@ public class List extends BaseEntity {
   @OneToMany(mappedBy = "list")
   private final java.util.List<Card> cards = new ArrayList<>();
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "board_id")
   private Board board;
 

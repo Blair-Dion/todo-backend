@@ -3,8 +3,10 @@ package dev.idion.bladitodo.domain.card;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.user.User;
+import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,11 +33,11 @@ public class Card extends BaseEntity {
   private String contents;
   private boolean isArchived;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "list_id")
   private List list;
 
@@ -63,5 +65,14 @@ public class Card extends BaseEntity {
     if (this.list != null && !this.list.getCards().contains(this)) {
       this.list.getCards().add(this);
     }
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public void updateTitleAndContents(CardRequest request) {
+    this.title = request.getTitle();
+    this.contents = request.getContents();
   }
 }

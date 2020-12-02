@@ -1,0 +1,127 @@
+= BlaDi Todo API Docs
+Dion[idion@idion.dev]
+1.0.1, 2020/12/02
+:doctype: book
+:sectlinks:
+:docinfo: shared-head
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectnums:
+
+== 변경사항
+
+== v1 API
+
+=== Board
+
+==== GET Board: 보드 조회 API
+
+===== CURL
+
+include::{snippets}/board-controller-test/get-board-dto-test/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/board-controller-test/get-board-dto-test/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/board-controller-test/get-board-dto-test/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/board-controller-test/get-board-dto-test/path-parameters.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/board-controller-test/get-board-dto-test/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/board-controller-test/get-board-dto-test/response-fields.adoc[]
+
+=== Card
+
+==== POST Card: 카드 생성 API
+
+===== CURL
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/path-parameters.adoc[]
+
+===== HTTP Request Fields
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/request-fields.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/card-controller-test/card_생성_api_테스트/response-fields.adoc[]
+
+==== PUT Card: 카드 수정 API
+
+===== CURL
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/path-parameters.adoc[]
+
+===== HTTP Request Fields
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/request-fields.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/card-controller-test/card_수정_api_테스트/response-fields.adoc[]
+
+==== DELETE Card: 카드 보관 API
+
+===== CURL
+
+include::{snippets}/card-controller-test/card_삭제_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/card-controller-test/card_삭제_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/card-controller-test/card_삭제_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/card-controller-test/card_삭제_api_테스트/path-parameters.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/card-controller-test/card_삭제_api_테스트/http-response.adoc[]
