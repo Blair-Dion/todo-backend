@@ -2,7 +2,12 @@ package dev.idion.bladitodo.service.card;
 
 import dev.idion.bladitodo.domain.card.Card;
 import dev.idion.bladitodo.domain.card.CardRepository;
+import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.list.ListRepository;
+import dev.idion.bladitodo.domain.log.Log;
+import dev.idion.bladitodo.domain.log.LogRepository;
+import dev.idion.bladitodo.domain.log.LogType;
+import dev.idion.bladitodo.domain.user.User;
 import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardCreateRequest;
@@ -20,15 +25,30 @@ public class CardService {
   private final CardRepository cardRepository;
   private final UserRepository userRepository;
   private final ListRepository listRepository;
+  private final LogRepository logRepository;
 
   public CardDTO createCardInto(Long listId, CardCreateRequest request) {
     log.debug("카드요청 객체: {}", request);
     Card card = request.toEntity();
     // TODO: 멀티유저 대응
-    card.setUser(userRepository.findById(1L).orElseThrow(RuntimeException::new));
-    card.setList(listRepository.findById(listId).orElseThrow(RuntimeException::new));
+    User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+    List list = listRepository.findById(listId).orElseThrow(RuntimeException::new);
+    card.setUser(user);
+    card.setList(list);
+
     card = cardRepository.save(card);
     log.debug("저장된 card 정보: {}", card);
+
+    Log cardAddLog = Log.builder()
+        .withType(LogType.CARD_ADD)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withAfterTitle(request.getTitle())
+        .withAfterContents(request.getContents())
+        .withBoard(list.getBoard())
+        .build();
+    logRepository.save(cardAddLog);
+
     return CardDTO.from(card);
   }
 }
