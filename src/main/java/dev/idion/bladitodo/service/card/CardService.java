@@ -10,7 +10,7 @@ import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.domain.user.User;
 import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
-import dev.idion.bladitodo.web.v1.card.request.CardCreateRequest;
+import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CardService {
   private final ListRepository listRepository;
   private final LogRepository logRepository;
 
-  public CardDTO createCardInto(Long listId, CardCreateRequest request) {
+  public CardDTO createCardInto(Long listId, CardRequest request) {
     log.debug("카드요청 객체: {}", request);
     Card card = request.toEntity();
     // TODO: 멀티유저 대응
@@ -48,6 +48,31 @@ public class CardService {
         .withBoard(list.getBoard())
         .build();
     logRepository.save(cardAddLog);
+
+    return CardDTO.from(card);
+  }
+
+  public CardDTO updateCard(Long listId, Long cardId, CardRequest request) {
+    log.debug("카드요청 객체: {}", request);
+    Card card = cardRepository.findById(cardId).orElseThrow(RuntimeException::new);
+    String beforeTitle = card.getTitle();
+    String beforeContents = card.getContents();
+    card.updateTitleAndContents(request);
+
+    cardRepository.save(card);
+    log.debug("변경된 card 정보: {}", card);
+
+    Log cardUpdateLog = Log.builder()
+        .withType(LogType.CARD_TITLE_AND_CONTENT_UPDATE)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withBeforeTitle(beforeTitle)
+        .withAfterTitle(card.getTitle())
+        .withBeforeContents(beforeContents)
+        .withAfterTitle(card.getContents())
+        .withBoard(card.getList().getBoard())
+        .build();
+    logRepository.save(cardUpdateLog);
 
     return CardDTO.from(card);
   }

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class CardCreateRequest {
+public class CardRequest {
 
   private String title;
   private String contents;

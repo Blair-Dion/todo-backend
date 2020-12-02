@@ -3,6 +3,7 @@ package dev.idion.bladitodo.domain.card;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.user.User;
+import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -68,5 +69,10 @@ public class Card extends BaseEntity {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public void updateTitleAndContents(CardRequest request) {
+    this.title = request.getTitle();
+    this.contents = request.getContents();
   }
 }

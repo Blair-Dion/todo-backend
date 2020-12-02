@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import dev.idion.bladitodo.service.card.CardService;
 import dev.idion.bladitodo.web.dto.CardDTO;
-import dev.idion.bladitodo.web.v1.card.request.CardCreateRequest;
+import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +52,9 @@ class CardControllerTest {
     String title = "제목";
     String contents = "내용";
     String userId = "ksundong";
-    CardCreateRequest cardCreateRequest = new CardCreateRequest();
-    cardCreateRequest.setTitle(title);
-    cardCreateRequest.setContents(contents);
+    CardRequest cardRequest = new CardRequest();
+    cardRequest.setTitle(title);
+    cardRequest.setContents(contents);
     // CardDTO
     CardDTO cardDTO = CardDTO.builder()
         .withId(cardId)
@@ -65,12 +65,12 @@ class CardControllerTest {
         .build();
 
     //when
-    when(cardService.createCardInto(eq(listId), any(CardCreateRequest.class))).thenReturn(cardDTO);
+    when(cardService.createCardInto(eq(listId), any(CardRequest.class))).thenReturn(cardDTO);
 
     //then
     MockHttpServletRequestBuilder requestBuilder = post(PRE_URI + "/list/{list_id}/card", listId)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(cardCreateRequest));
+        .content(asJsonString(cardRequest));
     mockMvc.perform(requestBuilder)
         .andDo(print())
         .andExpect(status().isOk())
