@@ -1,9 +1,7 @@
-package dev.idion.bladitodo.domain.board;
+package dev.idion.bladitodo.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.idion.bladitodo.domain.user.User;
-import dev.idion.bladitodo.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
