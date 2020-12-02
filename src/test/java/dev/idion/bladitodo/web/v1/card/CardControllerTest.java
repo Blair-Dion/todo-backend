@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -156,5 +157,26 @@ class CardControllerTest {
                     .type(JsonFieldType.STRING)
             )
         ));
+  }
+
+  @Test
+  void Card_삭제_API_테스트() throws Exception {
+    //given
+    long listId = 1L;
+    long cardId = 4L;
+
+    //when
+
+    //then
+    mockMvc.perform(delete(PRE_URI + "/list/{list_id}/card/{card_id}", listId, cardId))
+        .andDo(print())
+        .andExpect(status().isNoContent())
+        .andDo(document("{class-name}/{method-name}",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            pathParameters(
+                parameterWithName("list_id").description("보관할 카드의 list DB id"),
+                parameterWithName("card_id").description("보관할 카드의 DB id")
+            )));
   }
 }
