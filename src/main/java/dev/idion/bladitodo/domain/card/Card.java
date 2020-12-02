@@ -5,6 +5,7 @@ import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.user.User;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,11 +32,11 @@ public class Card extends BaseEntity {
   private String contents;
   private boolean isArchived;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "list_id")
   private List list;
 
