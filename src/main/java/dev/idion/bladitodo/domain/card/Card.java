@@ -65,4 +65,8 @@ public class Card extends BaseEntity {
       this.list.getCards().add(this);
     }
   }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 }
