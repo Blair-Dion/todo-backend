@@ -1,13 +1,13 @@
-package dev.idion.bladitodo.config;
+package dev.idion.bladitodo.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class QuerydslConfig {
+@TestConfiguration
+public class TestQuerydslConfig {
 
   @PersistenceContext
   private EntityManager entityManager;

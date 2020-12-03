@@ -1,5 +1,8 @@
 package dev.idion.bladitodo.service.card;
 
+import dev.idion.bladitodo.common.error.exception.UserNotFoundException;
+import dev.idion.bladitodo.common.error.exception.domain.CardNotFoundException;
+import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
 import dev.idion.bladitodo.domain.card.Card;
 import dev.idion.bladitodo.domain.card.CardRepository;
 import dev.idion.bladitodo.domain.list.List;
@@ -31,8 +34,8 @@ public class CardService {
     log.debug("카드요청 객체: {}", request);
     Card card = request.toEntity();
     // TODO: 멀티유저 대응
-    User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
-    List list = listRepository.findById(listId).orElseThrow(RuntimeException::new);
+    User user = userRepository.findById(1L).orElseThrow(UserNotFoundException::new);
+    List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
     card.setUser(user);
     card.setList(list);
 
@@ -53,8 +56,10 @@ public class CardService {
   }
 
   public CardDTO updateCard(Long listId, Long cardId, CardRequest request) {
+    listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+
     log.debug("카드요청 객체: {}", request);
-    Card card = cardRepository.findById(cardId).orElseThrow(RuntimeException::new);
+    Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
     card.updateTitleAndContents(request);
@@ -78,8 +83,10 @@ public class CardService {
   }
 
   public void archiveCard(Long listId, Long cardId) {
+    listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+
     try {
-      Card card = cardRepository.findById(cardId).orElseThrow(RuntimeException::new);
+      Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
       String beforeTitle = card.getTitle();
       String beforeContents = card.getContents();
       log.debug("보관할 카드 정보: {}", card);

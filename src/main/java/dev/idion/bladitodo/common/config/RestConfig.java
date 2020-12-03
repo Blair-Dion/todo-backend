@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.config;
+package dev.idion.bladitodo.common.config;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

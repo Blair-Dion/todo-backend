@@ -1,4 +1,4 @@
-package dev.idion.bladitodo.config;
+package dev.idion.bladitodo.common.config;
 
 import java.util.Optional;
 import org.springframework.context.annotation.Bean;
