@@ -17,6 +17,9 @@ public enum ErrorCode {
   LOGIN_REQUIRED(401, "U002", " 로그인을 해주세요."),
 
   // domain
+  BOARD_NOT_FOUND(404, "D001", "해당 보드를 찾을 수 없습니다."),
+  LIST_NOT_FOUND(404, "D002", "해당 리스트를 찾을 수 없습니다."),
+  CARD_NOT_FOUND(404, "D003", "해당 카드를 찾을 수 없습니다."),
   ;
 
   private final int status;

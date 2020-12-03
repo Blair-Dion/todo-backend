@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.service.log;
 
+import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.domain.log.LogRepository;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import java.util.List;
@@ -18,9 +19,14 @@ public class LogService {
   private final LogRepository logRepository;
 
   public List<LogDTO> findLogs(Long boardId) {
-    return logRepository.findLogsByBoardIdOrderByIdDesc(boardId)
+    List<LogDTO> logs = logRepository.findLogsByBoardIdOrderByIdDesc(boardId)
         .stream()
         .map(LogDTO::from)
         .collect(Collectors.toList());
+
+    if (logs.isEmpty()) {
+      throw new BoardNotFoundException();
+    }
+    return logs;
   }
 }
