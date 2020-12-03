@@ -63,6 +63,8 @@ public class MockAPIController {
     UserDTO user = UserDTO.builder()
         .withId(1L)
         .withUserId("ksundong")
+        .withProfileImageUrl(
+            "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4")
         .build();
 
     BoardDTO manualBoard = BoardDTO.builder()
@@ -84,6 +86,7 @@ public class MockAPIController {
         .withContents("mock API라도 문서는 필요하잖아요!")
         .withListId(list1.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
     CardDTO card2 = CardDTO.builder()
         .withId(2L)
@@ -91,6 +94,7 @@ public class MockAPIController {
         .withContents("mock API 잘 만들기")
         .withListId(list2.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
     CardDTO card3 = CardDTO.builder()
         .withId(3L)
@@ -98,6 +102,7 @@ public class MockAPIController {
         .withContents("환경설정 잘 하기")
         .withListId(list3.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
 
     list1.getCards().add(card1);

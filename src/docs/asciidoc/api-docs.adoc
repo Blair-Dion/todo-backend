@@ -1,6 +1,6 @@
 = BlaDi Todo API Docs
 Dion[idion@idion.dev]
-1.0.1, 2020/12/02
+1.0.2, 2020/12/03
 :doctype: book
 :sectlinks:
 :docinfo: shared-head
@@ -11,6 +11,8 @@ Dion[idion@idion.dev]
 :sectnums:
 
 == 변경사항
+
+(2020/12/03 17:44) 카드에 유저 프로필 이미지 정보가 추가되었습니다.
 
 == v1 API
 
