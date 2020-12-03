@@ -5,7 +5,6 @@ import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.log.Log;
 import java.util.ArrayList;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +27,7 @@ public class Board extends BaseEntity {
 
   private String name;
 
-  @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "board")
   private final java.util.List<List> lists = new ArrayList<>();
 
   @OneToMany(mappedBy = "board")
