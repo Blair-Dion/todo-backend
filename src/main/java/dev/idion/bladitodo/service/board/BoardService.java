@@ -17,7 +17,7 @@ public class BoardService {
   private final BoardRepository boardRepository;
 
   public BoardDTO findBoard(Long boardId) {
-    Board board = boardRepository.findByBoardId(boardId).orElseThrow(RuntimeException::new);
+    Board board = boardRepository.findById(boardId).orElseThrow(RuntimeException::new);
     log.debug("DB에서 조회된 board: {}", board);
 
     return BoardDTO.from(board);

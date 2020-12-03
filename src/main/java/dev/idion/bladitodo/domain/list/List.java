@@ -33,7 +33,7 @@ public class List extends BaseEntity {
   private LocalDateTime archivedDatetime;
   private boolean isArchived;
 
-  @OneToMany(mappedBy = "list")
+  @OneToMany(mappedBy = "list", fetch = FetchType.EAGER)
   private final java.util.List<Card> cards = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
