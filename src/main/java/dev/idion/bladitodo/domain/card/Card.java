@@ -17,11 +17,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 
 @Getter
 @ToString(callSuper = true, of = {"id", "title", "contents", "isArchived", "user", "list",
     "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_archived <> true")
 @Entity
 public class Card extends BaseEntity {
 
