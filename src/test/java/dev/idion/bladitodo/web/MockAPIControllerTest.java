@@ -87,6 +87,8 @@ class MockAPIControllerTest {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].user_id").description("카드 소유자의 id")
                     .type(JsonFieldType.STRING),
+                fieldWithPath("lists[].cards[].profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].list_id").description("카드가 속한 리스트의 DB id")
                     .type(JsonFieldType.NUMBER),
                 fieldWithPath("lists[].cards[].archived").description("카드가 아카이브 되었는지 여부")
@@ -143,6 +145,8 @@ class MockAPIControllerTest {
                 fieldWithPath("cards[].title").description("카드의 제목").type(JsonFieldType.STRING),
                 fieldWithPath("cards[].contents").description("카드의 내용").type(JsonFieldType.STRING),
                 fieldWithPath("cards[].user_id").description("카드 소유자의 id")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("cards[].profile_image_url").description("카드 소유자의 프로필 이미지")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("cards[].list_id").description("카드가 속한 리스트의 DB id")
                     .type(JsonFieldType.NUMBER),

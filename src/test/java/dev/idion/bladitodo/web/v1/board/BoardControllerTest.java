@@ -86,6 +86,8 @@ class BoardControllerTest {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].user_id").description("카드 소유자의 id")
                     .type(JsonFieldType.STRING),
+                fieldWithPath("lists[].cards[].profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].list_id").description("카드가 속한 리스트의 DB id")
                     .type(JsonFieldType.NUMBER),
                 fieldWithPath("lists[].cards[].archived").description("카드가 아카이브 되었는지 여부")
@@ -99,6 +101,8 @@ class BoardControllerTest {
     UserDTO user = UserDTO.builder()
         .withId(1L)
         .withUserId("ksundong")
+        .withProfileImageUrl(
+            "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4")
         .build();
 
     BoardDTO manualBoard = BoardDTO.builder()
@@ -120,6 +124,7 @@ class BoardControllerTest {
         .withContents("mock API라도 문서는 필요하잖아요!")
         .withListId(list1.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
     CardDTO card2 = CardDTO.builder()
         .withId(2L)
@@ -127,6 +132,7 @@ class BoardControllerTest {
         .withContents("mock API 잘 만들기")
         .withListId(list2.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
     CardDTO card3 = CardDTO.builder()
         .withId(3L)
@@ -134,6 +140,7 @@ class BoardControllerTest {
         .withContents("환경설정 잘 하기")
         .withListId(list3.getId())
         .withUserId(user.getUserId())
+        .withProfileImageUrl(user.getProfileImageUrl())
         .build();
 
     list1.getCards().add(card1);

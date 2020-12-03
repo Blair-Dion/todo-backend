@@ -17,17 +17,19 @@ public class CardDTO {
   private String contents;
   private boolean isArchived;
   private String userId;
+  private String profileImageUrl;
   private Long listId;
   private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
   private CardDTO(Long id, String title, String contents, boolean isArchived, String userId,
-      Long listId, LocalDateTime archivedDatetime) {
+      String profileImageUrl, Long listId, LocalDateTime archivedDatetime) {
     this.id = id;
     this.title = title;
     this.contents = contents;
     this.isArchived = isArchived;
     this.userId = userId;
+    this.profileImageUrl = profileImageUrl;
     this.listId = listId;
     this.archivedDatetime = archivedDatetime;
   }
@@ -39,6 +41,7 @@ public class CardDTO {
         .withContents(card.getContents())
         .withIsArchived(card.isArchived())
         .withUserId(card.getUser().getUserId())
+        .withProfileImageUrl(card.getUser().getProfileImageUrl())
         .withListId(card.getList().getId())
         .withArchivedDatetime(card.getArchivedDatetime())
         .build();

@@ -54,6 +54,7 @@ class CardControllerTest {
     String title = "제목";
     String contents = "내용";
     String userId = "ksundong";
+    String profileImageUrl = "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4";
     CardRequest cardRequest = new CardRequest();
     cardRequest.setTitle(title);
     cardRequest.setContents(contents);
@@ -63,6 +64,7 @@ class CardControllerTest {
         .withTitle(title)
         .withContents(contents)
         .withUserId(userId)
+        .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
         .build();
 
@@ -91,6 +93,8 @@ class CardControllerTest {
                 fieldWithPath("title").description("카드의 제목").type(JsonFieldType.STRING),
                 fieldWithPath("contents").description("카드의 내용").type(JsonFieldType.STRING),
                 fieldWithPath("user_id").description("카드를 생성한 user id").type(JsonFieldType.STRING),
+                fieldWithPath("profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("list_id").description("카드가 속한 List의 DB id")
                     .type(JsonFieldType.NUMBER),
                 fieldWithPath("archived").description("카드가 보관처리 되었는지 여부")
@@ -109,6 +113,7 @@ class CardControllerTest {
     String title = "수정한 제목";
     String contents = "수정한 내용";
     String userId = "ksundong";
+    String profileImageUrl = "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4";
     CardRequest cardRequest = new CardRequest();
     cardRequest.setTitle(title);
     cardRequest.setContents(contents);
@@ -118,6 +123,7 @@ class CardControllerTest {
         .withTitle(title)
         .withContents(contents)
         .withUserId(userId)
+        .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
         .build();
 
@@ -149,6 +155,8 @@ class CardControllerTest {
                 fieldWithPath("title").description("카드의 수정된 제목").type(JsonFieldType.STRING),
                 fieldWithPath("contents").description("카드의 수정된 내용").type(JsonFieldType.STRING),
                 fieldWithPath("user_id").description("카드를 생성한 user id").type(JsonFieldType.STRING),
+                fieldWithPath("profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("list_id").description("카드가 속한 List의 DB id")
                     .type(JsonFieldType.NUMBER),
                 fieldWithPath("archived").description("카드가 보관처리 되었는지 여부")
