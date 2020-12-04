@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LogRepository extends JpaRepository<Log, Long>, LogRepositoryCustom {
 
-  List<Log> findLogsByBoardIdOrderByIdDesc(Long BoardId);
+  List<Log> findLogsByBoardIdOrderByIdDesc(Long boardId);
 }
