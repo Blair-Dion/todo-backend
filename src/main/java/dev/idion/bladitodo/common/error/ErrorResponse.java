@@ -43,9 +43,9 @@ public class ErrorResponse {
   @Getter
   public static class FieldError {
 
-    private String field;
-    private String value;
-    private String reason;
+    private final String field;
+    private final String value;
+    private final String reason;
 
     private FieldError(final String field, final Object value, final String reason) {
       this.field = field;
