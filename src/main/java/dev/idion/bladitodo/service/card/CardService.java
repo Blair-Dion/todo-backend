@@ -64,7 +64,6 @@ public class CardService {
     String beforeContents = card.getContents();
     card.updateTitleAndContents(request);
 
-    cardRepository.save(card);
     log.debug("변경된 card 정보: {}", card);
 
     Log cardUpdateLog = Log.builder()
@@ -91,7 +90,6 @@ public class CardService {
       String beforeContents = card.getContents();
       log.debug("보관할 카드 정보: {}", card);
       card.archiveCard();
-      cardRepository.save(card);
 
       Log cardArchiveLog = Log.builder()
           .withType(LogType.CARD_ARCHIVE)
