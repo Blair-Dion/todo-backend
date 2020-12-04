@@ -15,6 +15,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import dev.idion.bladitodo.service.list.ListService;
 import dev.idion.bladitodo.web.dto.ListDTO;
@@ -69,6 +70,7 @@ class ListControllerTest {
         .content(asJsonString(listRequest));
     mockMvc.perform(requestBuilder)
         .andDo(print())
+        .andExpect(status().isOk())
         .andDo(document("{class-name}/{method-name}",
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
