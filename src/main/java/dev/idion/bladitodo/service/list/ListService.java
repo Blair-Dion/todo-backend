@@ -1,6 +1,7 @@
 package dev.idion.bladitodo.service.list;
 
 import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
+import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.board.BoardRepository;
 import dev.idion.bladitodo.domain.list.List;
@@ -41,6 +42,25 @@ public class ListService {
         .withBoard(list.getBoard())
         .build();
     logRepository.save(cardAddLog);
+
+    return ListDTO.from(list);
+  }
+
+  public ListDTO updateListNameOf(Long boardId, Long listId, ListRequest request) {
+    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+
+    log.debug("리스트 요청 객체: {}", request);
+    List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+    list.rename(request);
+    log.debug("변경된 list 정보: {}", list);
+
+    Log listNameUpdateLog = Log.builder()
+        .withType(LogType.LIST_RENAME)
+        .withFromListId(list.getId())
+        .withToListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+    logRepository.save(listNameUpdateLog);
 
     return ListDTO.from(list);
   }
