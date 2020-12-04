@@ -55,6 +55,7 @@ class CardControllerTest {
     String contents = "내용";
     String userId = "ksundong";
     String profileImageUrl = "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4";
+    // CardRequest
     CardRequest cardRequest = new CardRequest();
     cardRequest.setTitle(title);
     cardRequest.setContents(contents);

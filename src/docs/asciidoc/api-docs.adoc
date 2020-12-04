@@ -130,6 +130,38 @@ include::{snippets}/card-controller-test/card_삭제_api_테스트/path-paramete
 
 include::{snippets}/card-controller-test/card_삭제_api_테스트/http-response.adoc[]
 
+=== List
+
+==== POST List: 리스트 생성 API
+
+===== CURL
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/path-parameters.adoc[]
+
+===== HTTP Request Fields
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/request-fields.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/http-response.adoc[]
+
+===== HTTP Response Fields
+
+include::{snippets}/list-controller-test/list_생성_api_테스트/response-fields.adoc[]
+
 === Log
 
 ==== GET Log: 로그 조회 API
