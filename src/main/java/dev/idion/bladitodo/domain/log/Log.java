@@ -3,6 +3,7 @@ package dev.idion.bladitodo.domain.log;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.card.Card;
+import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -77,7 +78,7 @@ public class Log extends BaseEntity {
         .withBeforeTitle(beforeTitle)
         .withAfterTitle(card.getTitle())
         .withBeforeContents(beforeContents)
-        .withAfterTitle(card.getContents())
+        .withAfterContents(card.getContents())
         .withBoard(card.getList().getBoard())
         .build();
   }
@@ -90,6 +91,31 @@ public class Log extends BaseEntity {
         .withBeforeTitle(beforeTitle)
         .withBeforeContents(beforeContents)
         .withBoard(card.getList().getBoard())
+        .build();
+  }
+
+  public static Log listAddLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_ADD)
+        .withToListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+  }
+
+  public static Log listRenameLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_RENAME)
+        .withFromListId(list.getId())
+        .withToListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+  }
+
+  public static Log listArchiveLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_ARCHIVE)
+        .withFromListId(list.getId())
+        .withBoard(list.getBoard())
         .build();
   }
 
