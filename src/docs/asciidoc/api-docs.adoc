@@ -22,7 +22,7 @@ Dion[idion@idion.dev]
 
 === Board
 
-==== GET Board: 보드 조회 API
+==== `GET` Board: 보드 조회 API
 
 ===== CURL
 
@@ -50,7 +50,7 @@ include::{snippets}/board-controller-test/get-board-dto-test/response-fields.ado
 
 === Card
 
-==== POST Card: 카드 생성 API
+==== `POST` Card: 카드 생성 API
 
 ===== CURL
 
@@ -80,7 +80,7 @@ include::{snippets}/card-controller-test/card_생성_api_테스트/http-response
 
 include::{snippets}/card-controller-test/card_생성_api_테스트/response-fields.adoc[]
 
-==== PUT Card: 카드 수정 API
+==== `PUT` Card: 카드 수정 API
 
 ===== CURL
 
@@ -110,7 +110,7 @@ include::{snippets}/card-controller-test/card_수정_api_테스트/http-response
 
 include::{snippets}/card-controller-test/card_수정_api_테스트/response-fields.adoc[]
 
-==== DELETE Card: 카드 보관 API
+==== `DELETE` Card: 카드 보관 API
 
 ===== CURL
 
@@ -134,7 +134,7 @@ include::{snippets}/card-controller-test/card_삭제_api_테스트/http-response
 
 === List
 
-==== POST List: 리스트 생성 API
+==== `POST` List: 리스트 생성 API
 
 ===== CURL
 
@@ -164,7 +164,7 @@ include::{snippets}/list-controller-test/list_생성_api_테스트/http-response
 
 include::{snippets}/list-controller-test/list_생성_api_테스트/response-fields.adoc[]
 
-==== PUT List: 리스트 이름 수정 API
+==== `PUT` List: 리스트 이름 수정 API
 
 ===== CURL
 
@@ -194,7 +194,7 @@ include::{snippets}/list-controller-test/list_이름_수정_api_테스트/http-r
 
 include::{snippets}/list-controller-test/list_이름_수정_api_테스트/response-fields.adoc[]
 
-==== DELETE List: 리스트 보관 API
+==== `DELETE` List: 리스트 보관 API
 
 ===== CURL
 
@@ -218,7 +218,7 @@ include::{snippets}/list-controller-test/list_보관_api_테스트/http-response
 
 === Log
 
-==== GET Log: 로그 조회 API
+==== `GET` Log: 로그 조회 API
 
 ===== CURL
 
