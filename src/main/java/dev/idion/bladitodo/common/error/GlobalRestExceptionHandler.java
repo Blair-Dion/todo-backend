@@ -58,14 +58,4 @@ public class GlobalRestExceptionHandler {
     final ErrorResponse response = ErrorResponse.of(errorCode);
     return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
   }
-
-  /**
-   * 처리되지 않은 에러
-   */
-  @ExceptionHandler(Exception.class)
-  protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-    log.error("handleException", e);
-    final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
 }
