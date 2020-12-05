@@ -45,7 +45,7 @@ public class CardController {
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{cardId}")
-  public void updateCard(@PathVariable Long boardId, @PathVariable Long listId,
+  public void archiveCard(@PathVariable Long boardId, @PathVariable Long listId,
       @PathVariable Long cardId) {
     log.debug("보관 처리할 카드의 id: {}", cardId);
     cardService.archiveCard(boardId, listId, cardId);
