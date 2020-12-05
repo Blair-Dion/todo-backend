@@ -45,4 +45,9 @@ public class ListDTO implements ContainableDTO {
             .collect(Collectors.toList()))
         .build();
   }
+
+  @Override
+  public String getType() {
+    return "list";
+  }
 }

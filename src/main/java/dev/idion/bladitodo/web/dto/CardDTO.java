@@ -46,4 +46,9 @@ public class CardDTO implements ContainableDTO {
         .withArchivedDatetime(card.getArchivedDatetime())
         .build();
   }
+
+  @Override
+  public String getType() {
+    return "card";
+  }
 }
