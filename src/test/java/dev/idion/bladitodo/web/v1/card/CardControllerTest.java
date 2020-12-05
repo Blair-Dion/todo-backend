@@ -19,9 +19,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.service.card.CardService;
 import dev.idion.bladitodo.web.dto.CardDTO;
+import dev.idion.bladitodo.web.dto.DTOContainer;
+import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.util.StringJoiner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -69,10 +74,21 @@ class CardControllerTest {
         .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
         .build();
+    // LogDTO
+    LogDTO logDTO = LogDTO.builder()
+        .withId(1L)
+        .withType(LogType.CARD_ADD)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withAfterTitle(title)
+        .withAfterContents(contents)
+        .build();
+    // DTOContainer
+    DTOContainer container = new DTOContainer(cardDTO, logDTO);
 
     //when
     when(cardService.createCardInto(eq(boardId), eq(listId), any(CardRequest.class)))
-        .thenReturn(cardDTO);
+        .thenReturn(container);
 
     //then
     MockHttpServletRequestBuilder requestBuilder = post(
@@ -94,18 +110,35 @@ class CardControllerTest {
                 fieldWithPath("contents").description("카드의 내용").type(JsonFieldType.STRING)
             ),
             responseFields(
-                fieldWithPath("id").description("카드의 DB id").type(JsonFieldType.NUMBER),
-                fieldWithPath("title").description("카드의 제목").type(JsonFieldType.STRING),
-                fieldWithPath("contents").description("카드의 내용").type(JsonFieldType.STRING),
-                fieldWithPath("user_id").description("카드를 생성한 user id").type(JsonFieldType.STRING),
-                fieldWithPath("profile_image_url").description("카드 소유자의 프로필 이미지")
+                fieldWithPath("result_type").description("result의 DTO 타입")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("list_id").description("카드가 속한 List의 DB id")
+                fieldWithPath("result.id").description("카드의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("result.title").description("카드의 제목").type(JsonFieldType.STRING),
+                fieldWithPath("result.contents").description("카드의 내용").type(JsonFieldType.STRING),
+                fieldWithPath("result.user_id").description("카드를 생성한 user id")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.list_id").description("카드가 속한 List의 DB id")
                     .type(JsonFieldType.NUMBER),
-                fieldWithPath("archived").description("카드가 보관처리 되었는지 여부")
+                fieldWithPath("result.archived").description("카드가 보관처리 되었는지 여부")
                     .type(JsonFieldType.BOOLEAN),
-                fieldWithPath("archived_datetime").description("카드 보관처리 일자").optional()
-                    .type(JsonFieldType.STRING)
+                fieldWithPath("result.archived_datetime").description("카드 보관처리 일자").optional()
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("log.id").description("로그의 DB id").type(JsonFieldType.NUMBER),
+                typeField("log.type"),
+                fieldWithPath("log.before_title").description("이전 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_title").description("이후 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.before_contents").description("이전 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_contents").description("이후 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional()
             )
         ));
   }
@@ -132,10 +165,23 @@ class CardControllerTest {
         .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
         .build();
+    // LogDTO
+    LogDTO logDTO = LogDTO.builder()
+        .withId(1L)
+        .withType(LogType.CARD_TITLE_AND_CONTENT_UPDATE)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withBeforeContents("제목")
+        .withAfterTitle(title)
+        .withBeforeContents("내용")
+        .withAfterContents(contents)
+        .build();
+    // DTOContainer
+    DTOContainer container = new DTOContainer(cardDTO, logDTO);
 
     //when
     when(cardService.updateCard(eq(boardId), eq(listId), eq(cardId), any(CardRequest.class)))
-        .thenReturn(cardDTO);
+        .thenReturn(container);
 
     //then
     MockHttpServletRequestBuilder requestBuilder =
@@ -158,18 +204,36 @@ class CardControllerTest {
                 fieldWithPath("contents").description("수정할 내용").type(JsonFieldType.STRING)
             ),
             responseFields(
-                fieldWithPath("id").description("카드의 DB id").type(JsonFieldType.NUMBER),
-                fieldWithPath("title").description("카드의 수정된 제목").type(JsonFieldType.STRING),
-                fieldWithPath("contents").description("카드의 수정된 내용").type(JsonFieldType.STRING),
-                fieldWithPath("user_id").description("카드를 생성한 user id").type(JsonFieldType.STRING),
-                fieldWithPath("profile_image_url").description("카드 소유자의 프로필 이미지")
+                fieldWithPath("result_type").description("result의 DTO 타입")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("list_id").description("카드가 속한 List의 DB id")
+                fieldWithPath("result.id").description("카드의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("result.title").description("카드의 수정된 제목").type(JsonFieldType.STRING),
+                fieldWithPath("result.contents").description("카드의 수정된 내용")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.user_id").description("카드를 생성한 user id")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.list_id").description("카드가 속한 List의 DB id")
                     .type(JsonFieldType.NUMBER),
-                fieldWithPath("archived").description("카드가 보관처리 되었는지 여부")
+                fieldWithPath("result.archived").description("카드가 보관처리 되었는지 여부")
                     .type(JsonFieldType.BOOLEAN),
-                fieldWithPath("archived_datetime").description("카드 보관처리 일자").optional()
-                    .type(JsonFieldType.STRING)
+                fieldWithPath("result.archived_datetime").description("카드 보관처리 일자").optional()
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("log.id").description("로그의 DB id").type(JsonFieldType.NUMBER),
+                typeField("log.type"),
+                fieldWithPath("log.before_title").description("이전 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_title").description("이후 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.before_contents").description("이전 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_contents").description("이후 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional()
             )
         ));
   }
@@ -197,5 +261,15 @@ class CardControllerTest {
                 parameterWithName("list_id").description("보관할 카드의 list DB id"),
                 parameterWithName("card_id").description("보관할 카드의 DB id")
             )));
+  }
+
+  private FieldDescriptor typeField(String path) {
+    StringJoiner sj = new StringJoiner(", ");
+    for (LogType value : LogType.values()) {
+      sj.add("`" + value + "`");
+    }
+    String description = "로그의 종류(" + sj.toString() + ")";
+
+    return fieldWithPath(path).description(description).type(JsonFieldType.STRING);
   }
 }

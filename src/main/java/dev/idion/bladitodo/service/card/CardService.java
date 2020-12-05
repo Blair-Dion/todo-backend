@@ -15,6 +15,8 @@ import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.domain.user.User;
 import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
+import dev.idion.bladitodo.web.dto.DTOContainer;
+import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,7 @@ public class CardService {
   private final BoardRepository boardRepository;
   private final LogRepository logRepository;
 
-  public CardDTO createCardInto(Long boardId, Long listId, CardRequest request) {
+  public DTOContainer createCardInto(Long boardId, Long listId, CardRequest request) {
     boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
 
     log.debug("카드요청 객체: {}", request);
@@ -57,10 +59,10 @@ public class CardService {
         .build();
     logRepository.save(cardAddLog);
 
-    return CardDTO.from(card);
+    return new DTOContainer(CardDTO.from(card), LogDTO.from(cardAddLog));
   }
 
-  public CardDTO updateCard(Long boardId, Long listId, Long cardId, CardRequest request) {
+  public DTOContainer updateCard(Long boardId, Long listId, Long cardId, CardRequest request) {
     boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
 
@@ -84,7 +86,7 @@ public class CardService {
         .build();
     logRepository.save(cardUpdateLog);
 
-    return CardDTO.from(card);
+    return new DTOContainer(CardDTO.from(card), LogDTO.from(cardUpdateLog));
   }
 
   public void archiveCard(Long boardId, Long listId, Long cardId) {

@@ -19,10 +19,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.service.list.ListService;
+import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.ListDTO;
+import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +61,15 @@ class ListControllerTest {
 
     ListRequest listRequest = makeListRequest(name);
     ListDTO listDTO = makeListDTO(boardId, listId, name);
+    LogDTO listAddLog = LogDTO.builder()
+        .withId(1L)
+        .withType(LogType.LIST_ADD)
+        .withToListId(listId)
+        .build();
+    DTOContainer container = new DTOContainer(listDTO, listAddLog);
 
     //when
-    when(listService.createListInto(eq(boardId), any(ListRequest.class))).thenReturn(listDTO);
+    when(listService.createListInto(eq(boardId), any(ListRequest.class))).thenReturn(container);
 
     //then
     MockHttpServletRequestBuilder requestBuilder = post(PRE_URI + "/board/{board_id}/list", boardId)
@@ -77,9 +87,25 @@ class ListControllerTest {
             requestFields(
                 getListRequestFieldDescriptors("리스트의 name")
             ),
-            responseFields(
-                getListDtoFieldDescriptors()
-            )
+            responseFields(fieldWithPath("result_type").description("result의 DTO 타입")
+                .type(JsonFieldType.STRING))
+                .and(getListDtoSnippet("result."))
+                .and(
+                    fieldWithPath("log.id").description("로그의 DB id").type(JsonFieldType.NUMBER),
+                    typeField("log.type"),
+                    fieldWithPath("log.before_title").description("이전 제목").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.after_title").description("이후 제목").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.before_contents").description("이전 내용").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.after_contents").description("이후 내용").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.from_list_id").description("이전 리스트의 DB id").optional()
+                        .type(JsonFieldType.NUMBER),
+                    fieldWithPath("log.to_list_id").description("이후 리스트의 DB id").optional()
+                        .type(JsonFieldType.NUMBER)
+                )
         ));
   }
 
@@ -92,10 +118,17 @@ class ListControllerTest {
 
     ListRequest listRequest = makeListRequest(name);
     ListDTO listDTO = makeListDTO(boardId, listId, name);
+    LogDTO listNameUpdateLog = LogDTO.builder()
+        .withId(2L)
+        .withType(LogType.LIST_RENAME)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .build();
+    DTOContainer container = new DTOContainer(listDTO, listNameUpdateLog);
 
     //when
     when(listService.updateListNameOf(eq(boardId), eq(listId), any(ListRequest.class)))
-        .thenReturn(listDTO);
+        .thenReturn(container);
 
     //then
     MockHttpServletRequestBuilder requestBuilder =
@@ -115,9 +148,25 @@ class ListControllerTest {
             requestFields(
                 getListRequestFieldDescriptors("수정할 리스트의 name")
             ),
-            responseFields(
-                getListDtoFieldDescriptors()
-            )
+            responseFields(fieldWithPath("result_type").description("result의 DTO 타입")
+                .type(JsonFieldType.STRING))
+                .and(getListDtoSnippet("result."))
+                .and(
+                    fieldWithPath("log.id").description("로그의 DB id").type(JsonFieldType.NUMBER),
+                    typeField("log.type"),
+                    fieldWithPath("log.before_title").description("이전 제목").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.after_title").description("이후 제목").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.before_contents").description("이전 내용").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.after_contents").description("이후 내용").optional()
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("log.from_list_id").description("이전 리스트의 DB id").optional()
+                        .type(JsonFieldType.NUMBER),
+                    fieldWithPath("log.to_list_id").description("이후 리스트의 DB id").optional()
+                        .type(JsonFieldType.NUMBER)
+                )
         ));
   }
 
@@ -164,17 +213,26 @@ class ListControllerTest {
     };
   }
 
-  private FieldDescriptor[] getListDtoFieldDescriptors() {
+  private FieldDescriptor[] getListDtoSnippet(String prefix) {
     return new FieldDescriptor[]{
-        fieldWithPath("id").description("리스트의 DB id").type(JsonFieldType.NUMBER),
-        fieldWithPath("name").description("리스트의 name").type(JsonFieldType.STRING),
-        fieldWithPath("board_id").description("리스트가 속한 보드의 DB id")
+        fieldWithPath(prefix + "id").description("리스트의 DB id").type(JsonFieldType.NUMBER),
+        fieldWithPath(prefix + "name").description("리스트의 name").type(JsonFieldType.STRING),
+        fieldWithPath(prefix + "board_id").description("리스트가 속한 보드의 DB id")
             .type(JsonFieldType.NUMBER),
-        fieldWithPath("archived").description("리스트가 보관처리 되었는지 여부")
+        fieldWithPath(prefix + "archived").description("리스트가 보관처리 되었는지 여부")
             .type(JsonFieldType.BOOLEAN),
-        fieldWithPath("archived_datetime").description("리스트 보관처리 일자").optional()
+        fieldWithPath(prefix + "archived_datetime").description("리스트 보관처리 일자").optional()
             .type(JsonFieldType.STRING),
-        fieldWithPath("cards").description("리스트의 카드목록(비어있음)").type(JsonFieldType.ARRAY)};
+        fieldWithPath(prefix + "cards").description("리스트의 카드목록(비어있음)").type(JsonFieldType.ARRAY)};
   }
 
+  private FieldDescriptor typeField(String path) {
+    StringJoiner sj = new StringJoiner(", ");
+    for (LogType value : LogType.values()) {
+      sj.add("`" + value + "`");
+    }
+    String description = "로그의 종류(" + sj.toString() + ")";
+
+    return fieldWithPath(path).description(description).type(JsonFieldType.STRING);
+  }
 }

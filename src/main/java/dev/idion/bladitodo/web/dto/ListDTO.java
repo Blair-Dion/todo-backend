@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class ListDTO {
+public class ListDTO implements ContainableDTO {
 
   private Long id;
   private String name;
@@ -44,5 +44,10 @@ public class ListDTO {
             .map(CardDTO::from)
             .collect(Collectors.toList()))
         .build();
+  }
+
+  @Override
+  public String dtoType() {
+    return "list";
   }
 }

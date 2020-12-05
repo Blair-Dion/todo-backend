@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CardDTO {
+public class CardDTO implements ContainableDTO {
 
   private Long id;
   private String title;
@@ -45,5 +45,10 @@ public class CardDTO {
         .withListId(card.getList().getId())
         .withArchivedDatetime(card.getArchivedDatetime())
         .build();
+  }
+
+  @Override
+  public String dtoType() {
+    return "card";
   }
 }
