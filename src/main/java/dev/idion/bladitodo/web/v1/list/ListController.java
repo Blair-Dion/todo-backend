@@ -40,4 +40,10 @@ public class ListController {
 
     return list;
   }
+
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{listId}")
+  public void archiveListName(@PathVariable Long boardId, @PathVariable Long listId) {
+    listService.archiveList(boardId, listId);
+  }
 }

@@ -64,4 +64,19 @@ public class ListService {
 
     return ListDTO.from(list);
   }
+
+  public void archiveList(Long boardId, Long listId) {
+    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+
+    List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+    log.debug("보관할 리스트 정보: {}", list);
+    list.archiveList();
+
+    Log listArchiveLog = Log.builder()
+        .withType(LogType.LIST_ARCHIVE)
+        .withFromListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+    logRepository.save(listArchiveLog);
+  }
 }
