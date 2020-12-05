@@ -2,6 +2,9 @@ package dev.idion.bladitodo.domain.log;
 
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.board.Board;
+import dev.idion.bladitodo.domain.card.Card;
+import dev.idion.bladitodo.domain.list.List;
+import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -53,6 +56,67 @@ public class Log extends BaseEntity {
     this.fromListId = fromListId;
     this.toListId = toListId;
     this.board = board;
+  }
+
+  public static Log cardAddLog(Long listId, CardRequest request, Board board) {
+    return Log.builder()
+        .withType(LogType.CARD_ADD)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withAfterTitle(request.getTitle())
+        .withAfterContents(request.getContents())
+        .withBoard(board)
+        .build();
+  }
+
+  public static Log cardUpdateLog(Long listId, String beforeTitle, String beforeContents,
+      Card card) {
+    return Log.builder()
+        .withType(LogType.CARD_TITLE_AND_CONTENT_UPDATE)
+        .withFromListId(listId)
+        .withToListId(listId)
+        .withBeforeTitle(beforeTitle)
+        .withAfterTitle(card.getTitle())
+        .withBeforeContents(beforeContents)
+        .withAfterContents(card.getContents())
+        .withBoard(card.getList().getBoard())
+        .build();
+  }
+
+  public static Log cardArchiveLog(Long listId, String beforeTitle, String beforeContents,
+      Card card) {
+    return Log.builder()
+        .withType(LogType.CARD_ARCHIVE)
+        .withFromListId(listId)
+        .withBeforeTitle(beforeTitle)
+        .withBeforeContents(beforeContents)
+        .withBoard(card.getList().getBoard())
+        .build();
+  }
+
+  public static Log listAddLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_ADD)
+        .withToListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+  }
+
+  public static Log listRenameLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_RENAME)
+        .withFromListId(list.getId())
+        .withToListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
+  }
+
+  public static Log listArchiveLog(List list) {
+    return Log.builder()
+        .withType(LogType.LIST_ARCHIVE)
+        .withFromListId(list.getId())
+        .withBoard(list.getBoard())
+        .build();
   }
 
   public void setBoard(Board board) {

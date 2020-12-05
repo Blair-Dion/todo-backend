@@ -11,7 +11,6 @@ import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.list.ListRepository;
 import dev.idion.bladitodo.domain.log.Log;
 import dev.idion.bladitodo.domain.log.LogRepository;
-import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.domain.user.User;
 import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
@@ -49,14 +48,7 @@ public class CardService {
     card = cardRepository.save(card);
     log.debug("저장된 card 정보: {}", card);
 
-    Log cardAddLog = Log.builder()
-        .withType(LogType.CARD_ADD)
-        .withFromListId(listId)
-        .withToListId(listId)
-        .withAfterTitle(request.getTitle())
-        .withAfterContents(request.getContents())
-        .withBoard(list.getBoard())
-        .build();
+    Log cardAddLog = Log.cardAddLog(listId, request, list.getBoard());
     logRepository.save(cardAddLog);
 
     return new DTOContainer(CardDTO.from(card), LogDTO.from(cardAddLog));
@@ -74,16 +66,7 @@ public class CardService {
 
     log.debug("변경된 card 정보: {}", card);
 
-    Log cardUpdateLog = Log.builder()
-        .withType(LogType.CARD_TITLE_AND_CONTENT_UPDATE)
-        .withFromListId(listId)
-        .withToListId(listId)
-        .withBeforeTitle(beforeTitle)
-        .withAfterTitle(card.getTitle())
-        .withBeforeContents(beforeContents)
-        .withAfterTitle(card.getContents())
-        .withBoard(card.getList().getBoard())
-        .build();
+    Log cardUpdateLog = Log.cardUpdateLog(listId, beforeTitle, beforeContents, card);
     logRepository.save(cardUpdateLog);
 
     return new DTOContainer(CardDTO.from(card), LogDTO.from(cardUpdateLog));
@@ -99,13 +82,7 @@ public class CardService {
     log.debug("보관할 카드 정보: {}", card);
     card.archiveCard();
 
-    Log cardArchiveLog = Log.builder()
-        .withType(LogType.CARD_ARCHIVE)
-        .withFromListId(listId)
-        .withBeforeTitle(beforeTitle)
-        .withBeforeContents(beforeContents)
-        .withBoard(card.getList().getBoard())
-        .build();
+    Log cardArchiveLog = Log.cardArchiveLog(listId, beforeTitle, beforeContents, card);
     logRepository.save(cardArchiveLog);
   }
 }

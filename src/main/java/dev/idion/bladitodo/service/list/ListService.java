@@ -8,7 +8,6 @@ import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.list.ListRepository;
 import dev.idion.bladitodo.domain.log.Log;
 import dev.idion.bladitodo.domain.log.LogRepository;
-import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.ListDTO;
 import dev.idion.bladitodo.web.dto.LogDTO;
@@ -37,11 +36,7 @@ public class ListService {
     list = listRepository.save(list);
     log.debug("저장된 List 정보: {}", list);
 
-    Log listAddLog = Log.builder()
-        .withType(LogType.LIST_ADD)
-        .withToListId(list.getId())
-        .withBoard(list.getBoard())
-        .build();
+    Log listAddLog = Log.listAddLog(list);
     logRepository.save(listAddLog);
 
     return new DTOContainer(ListDTO.from(list), LogDTO.from(listAddLog));
@@ -55,12 +50,7 @@ public class ListService {
     list.rename(request);
     log.debug("변경된 list 정보: {}", list);
 
-    Log listNameUpdateLog = Log.builder()
-        .withType(LogType.LIST_RENAME)
-        .withFromListId(list.getId())
-        .withToListId(list.getId())
-        .withBoard(list.getBoard())
-        .build();
+    Log listNameUpdateLog = Log.listRenameLog(list);
     logRepository.save(listNameUpdateLog);
 
     return new DTOContainer(ListDTO.from(list), LogDTO.from(listNameUpdateLog));
@@ -73,11 +63,7 @@ public class ListService {
     log.debug("보관할 리스트 정보: {}", list);
     list.archiveList();
 
-    Log listArchiveLog = Log.builder()
-        .withType(LogType.LIST_ARCHIVE)
-        .withFromListId(list.getId())
-        .withBoard(list.getBoard())
-        .build();
+    Log listArchiveLog = Log.listArchiveLog(list);
     logRepository.save(listArchiveLog);
   }
 }
