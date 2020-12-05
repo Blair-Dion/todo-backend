@@ -48,7 +48,7 @@ public class CardDTO implements ContainableDTO {
   }
 
   @Override
-  public String getType() {
+  public String dtoType() {
     return "card";
   }
 }

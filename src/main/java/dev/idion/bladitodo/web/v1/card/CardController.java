@@ -1,7 +1,7 @@
 package dev.idion.bladitodo.web.v1.card;
 
 import dev.idion.bladitodo.service.card.CardService;
-import dev.idion.bladitodo.web.dto.CardDTO;
+import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,22 +25,22 @@ public class CardController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public CardDTO createCard(@PathVariable Long boardId, @PathVariable Long listId,
+  public DTOContainer createCard(@PathVariable Long boardId, @PathVariable Long listId,
       @RequestBody CardRequest request) {
-    CardDTO createdCard = cardService.createCardInto(boardId, listId, request);
-    log.debug("생성된 카드 정보: {}", createdCard);
+    DTOContainer createdCardContainer = cardService.createCardInto(boardId, listId, request);
+    log.debug("생성된 카드 정보: {}", createdCardContainer);
 
-    return createdCard;
+    return createdCardContainer;
   }
 
   @PutMapping("/{cardId}")
-  public CardDTO updateCard(@PathVariable Long boardId, @PathVariable Long listId,
+  public DTOContainer updateCard(@PathVariable Long boardId, @PathVariable Long listId,
       @PathVariable Long cardId,
       @RequestBody CardRequest request) {
-    CardDTO updatedCard = cardService.updateCard(boardId, listId, cardId, request);
-    log.debug("변경된 카드 정보: {}", updatedCard);
+    DTOContainer updatedCardContainer = cardService.updateCard(boardId, listId, cardId, request);
+    log.debug("변경된 카드 정보: {}", updatedCardContainer);
 
-    return updatedCard;
+    return updatedCardContainer;
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

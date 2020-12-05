@@ -12,7 +12,7 @@ public class DTOContainer {
   private final LogDTO log;
 
   public DTOContainer(ContainableDTO result, LogDTO log) {
-    this.resultType = result.getType();
+    this.resultType = result.dtoType();
     this.result = result;
     this.log = log;
   }
