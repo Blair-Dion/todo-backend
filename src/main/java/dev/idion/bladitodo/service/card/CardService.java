@@ -64,7 +64,6 @@ public class CardService {
     String beforeContents = card.getContents();
     card.updateTitleAndContents(request);
 
-    cardRepository.save(card);
     log.debug("변경된 card 정보: {}", card);
 
     Log cardUpdateLog = Log.builder()
@@ -85,23 +84,19 @@ public class CardService {
   public void archiveCard(Long listId, Long cardId) {
     listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
 
-    try {
-      Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-      String beforeTitle = card.getTitle();
-      String beforeContents = card.getContents();
-      log.debug("보관할 카드 정보: {}", card);
-      card.archiveCard();
-      cardRepository.save(card);
+    Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
+    String beforeTitle = card.getTitle();
+    String beforeContents = card.getContents();
+    log.debug("보관할 카드 정보: {}", card);
+    card.archiveCard();
 
-      Log cardArchiveLog = Log.builder()
-          .withType(LogType.CARD_ARCHIVE)
-          .withFromListId(listId)
-          .withBeforeTitle(beforeTitle)
-          .withBeforeContents(beforeContents)
-          .withBoard(card.getList().getBoard())
-          .build();
-      logRepository.save(cardArchiveLog);
-    } catch (RuntimeException ignored) {
-    }
+    Log cardArchiveLog = Log.builder()
+        .withType(LogType.CARD_ARCHIVE)
+        .withFromListId(listId)
+        .withBeforeTitle(beforeTitle)
+        .withBeforeContents(beforeContents)
+        .withBoard(card.getList().getBoard())
+        .build();
+    logRepository.save(cardArchiveLog);
   }
 }

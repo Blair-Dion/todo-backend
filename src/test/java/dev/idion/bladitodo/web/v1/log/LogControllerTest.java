@@ -49,16 +49,16 @@ class LogControllerTest {
     long boardId = 1L;
     List<LogDTO> logs = Lists.list(
         LogDTO.builder()
-            .withId(1L)
-            .withType(LogType.LIST_ADD)
-            .withToListId(1L)
-            .build(),
-        LogDTO.builder()
             .withId(2L)
             .withType(LogType.CARD_ADD)
             .withAfterTitle("제목")
             .withAfterContents("내용")
             .withFromListId(1L)
+            .withToListId(1L)
+            .build(),
+        LogDTO.builder()
+            .withId(1L)
+            .withType(LogType.LIST_ADD)
             .withToListId(1L)
             .build()
     );

@@ -23,6 +23,7 @@ public class CardController {
 
   private final CardService cardService;
 
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public CardDTO createCard(@PathVariable Long listId, @RequestBody CardRequest request) {
     CardDTO createdCard = cardService.createCardInto(listId, request);
