@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class ListDTO {
+public class ListDTO implements ContainableDTO {
 
   private Long id;
   private String name;

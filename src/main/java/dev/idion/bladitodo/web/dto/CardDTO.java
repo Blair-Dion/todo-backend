@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CardDTO {
+public class CardDTO implements ContainableDTO {
 
   private Long id;
   private String title;
