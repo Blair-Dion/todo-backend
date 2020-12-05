@@ -49,6 +49,7 @@ class CardControllerTest {
   @Test
   void Card_생성_API_테스트() throws Exception {
     //given
+    long boardId = 1L;
     long listId = 1L;
     long cardId = 4L;
     String title = "제목";
@@ -70,10 +71,12 @@ class CardControllerTest {
         .build();
 
     //when
-    when(cardService.createCardInto(eq(listId), any(CardRequest.class))).thenReturn(cardDTO);
+    when(cardService.createCardInto(eq(boardId), eq(listId), any(CardRequest.class)))
+        .thenReturn(cardDTO);
 
     //then
-    MockHttpServletRequestBuilder requestBuilder = post(PRE_URI + "/list/{list_id}/card", listId)
+    MockHttpServletRequestBuilder requestBuilder = post(
+        PRE_URI + "/board/{board_id}/list/{list_id}/card", boardId, listId)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(cardRequest));
     mockMvc.perform(requestBuilder)
@@ -83,6 +86,7 @@ class CardControllerTest {
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             pathParameters(
+                parameterWithName("board_id").description("카드가 속한 보드의 DB id"),
                 parameterWithName("list_id").description("카드를 추가할 list의 DB id")
             ),
             requestFields(
@@ -109,6 +113,7 @@ class CardControllerTest {
   @Test
   void Card_수정_API_테스트() throws Exception {
     //given
+    long boardId = 1L;
     long listId = 1L;
     long cardId = 4L;
     String title = "수정한 제목";
@@ -129,12 +134,12 @@ class CardControllerTest {
         .build();
 
     //when
-    when(cardService.updateCard(eq(listId), eq(cardId), any(CardRequest.class)))
+    when(cardService.updateCard(eq(boardId), eq(listId), eq(cardId), any(CardRequest.class)))
         .thenReturn(cardDTO);
 
     //then
     MockHttpServletRequestBuilder requestBuilder =
-        put(PRE_URI + "/list/{list_id}/card/{card_id}", listId, cardId)
+        put(PRE_URI + "/board/{board_id}/list/{list_id}/card/{card_id}", boardId, listId, cardId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(cardRequest));
     mockMvc.perform(requestBuilder)
@@ -144,6 +149,7 @@ class CardControllerTest {
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             pathParameters(
+                parameterWithName("board_id").description("카드가 속한 보드의 DB id"),
                 parameterWithName("list_id").description("수정할 카드의 list DB id"),
                 parameterWithName("card_id").description("수정할 카드의 DB id")
             ),
@@ -171,19 +177,23 @@ class CardControllerTest {
   @Test
   void Card_삭제_API_테스트() throws Exception {
     //given
+    long boardId = 1L;
     long listId = 1L;
     long cardId = 4L;
 
     //when
 
     //then
-    mockMvc.perform(delete(PRE_URI + "/list/{list_id}/card/{card_id}", listId, cardId))
+    mockMvc.perform(
+        delete(PRE_URI + "/board/{board_id}/list/{list_id}/card/{card_id}", boardId, listId,
+            cardId))
         .andDo(print())
         .andExpect(status().isNoContent())
         .andDo(document("{class-name}/{method-name}",
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             pathParameters(
+                parameterWithName("board_id").description("카드가 속한 보드의 DB id"),
                 parameterWithName("list_id").description("보관할 카드의 list DB id"),
                 parameterWithName("card_id").description("보관할 카드의 DB id")
             )));

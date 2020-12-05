@@ -1,8 +1,10 @@
 package dev.idion.bladitodo.service.card;
 
 import dev.idion.bladitodo.common.error.exception.UserNotFoundException;
+import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.CardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
+import dev.idion.bladitodo.domain.board.BoardRepository;
 import dev.idion.bladitodo.domain.card.Card;
 import dev.idion.bladitodo.domain.card.CardRepository;
 import dev.idion.bladitodo.domain.list.List;
@@ -28,9 +30,12 @@ public class CardService {
   private final CardRepository cardRepository;
   private final UserRepository userRepository;
   private final ListRepository listRepository;
+  private final BoardRepository boardRepository;
   private final LogRepository logRepository;
 
-  public CardDTO createCardInto(Long listId, CardRequest request) {
+  public CardDTO createCardInto(Long boardId, Long listId, CardRequest request) {
+    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+
     log.debug("카드요청 객체: {}", request);
     Card card = request.toEntity();
     // TODO: 멀티유저 대응
@@ -55,7 +60,8 @@ public class CardService {
     return CardDTO.from(card);
   }
 
-  public CardDTO updateCard(Long listId, Long cardId, CardRequest request) {
+  public CardDTO updateCard(Long boardId, Long listId, Long cardId, CardRequest request) {
+    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
 
     log.debug("카드요청 객체: {}", request);
@@ -81,7 +87,8 @@ public class CardService {
     return CardDTO.from(card);
   }
 
-  public void archiveCard(Long listId, Long cardId) {
+  public void archiveCard(Long boardId, Long listId, Long cardId) {
+    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);

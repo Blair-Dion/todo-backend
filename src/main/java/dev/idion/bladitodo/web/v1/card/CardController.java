@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/v1/list/{listId}/card")
+@RequestMapping("/v1/board/{boardId}/list/{listId}/card")
 @RestController
 public class CardController {
 
@@ -25,17 +25,19 @@ public class CardController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public CardDTO createCard(@PathVariable Long listId, @RequestBody CardRequest request) {
-    CardDTO createdCard = cardService.createCardInto(listId, request);
+  public CardDTO createCard(@PathVariable Long boardId, @PathVariable Long listId,
+      @RequestBody CardRequest request) {
+    CardDTO createdCard = cardService.createCardInto(boardId, listId, request);
     log.debug("생성된 카드 정보: {}", createdCard);
 
     return createdCard;
   }
 
   @PutMapping("/{cardId}")
-  public CardDTO updateCard(@PathVariable Long listId, @PathVariable Long cardId,
+  public CardDTO updateCard(@PathVariable Long boardId, @PathVariable Long listId,
+      @PathVariable Long cardId,
       @RequestBody CardRequest request) {
-    CardDTO updatedCard = cardService.updateCard(listId, cardId, request);
+    CardDTO updatedCard = cardService.updateCard(boardId, listId, cardId, request);
     log.debug("변경된 카드 정보: {}", updatedCard);
 
     return updatedCard;
@@ -43,8 +45,9 @@ public class CardController {
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{cardId}")
-  public void updateCard(@PathVariable Long listId, @PathVariable Long cardId) {
+  public void updateCard(@PathVariable Long boardId, @PathVariable Long listId,
+      @PathVariable Long cardId) {
     log.debug("보관 처리할 카드의 id: {}", cardId);
-    cardService.archiveCard(listId, cardId);
+    cardService.archiveCard(boardId, listId, cardId);
   }
 }
