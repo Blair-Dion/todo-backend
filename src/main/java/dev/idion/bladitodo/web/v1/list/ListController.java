@@ -5,11 +5,14 @@ import dev.idion.bladitodo.web.dto.ListDTO;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -20,6 +23,7 @@ public class ListController {
 
   private final ListService listService;
 
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ListDTO createList(@PathVariable Long boardId, @RequestBody ListRequest listRequest) {
     ListDTO list = listService.createListInto(boardId, listRequest);

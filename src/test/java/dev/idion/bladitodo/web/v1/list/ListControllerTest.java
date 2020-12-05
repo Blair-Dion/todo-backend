@@ -66,7 +66,7 @@ class ListControllerTest {
         .content(asJsonString(listRequest));
     mockMvc.perform(requestBuilder)
         .andDo(print())
-        .andExpect(status().isOk())
+        .andExpect(status().isCreated())
         .andDo(document("{class-name}/{method-name}",
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
