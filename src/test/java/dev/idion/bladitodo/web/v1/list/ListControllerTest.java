@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -116,6 +117,28 @@ class ListControllerTest {
             ),
             responseFields(
                 getListDtoFieldDescriptors()
+            )
+        ));
+  }
+
+  @Test
+  void List_보관_API_테스트() throws Exception {
+    //given
+    long listId = 1L;
+    long boardId = 1L;
+
+    //when
+
+    //then
+    mockMvc.perform(delete(PRE_URI + "/board/{board_id}/list/{list_id}", boardId, listId))
+        .andDo(print())
+        .andExpect(status().isNoContent())
+        .andDo(document("{class-name}/{method-name}",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            pathParameters(
+                parameterWithName("board_id").description("리스트가 속한 board의 DB id"),
+                parameterWithName("list_id").description("수정할 list의 DB id")
             )
         ));
   }

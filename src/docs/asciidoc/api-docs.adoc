@@ -1,6 +1,6 @@
 = BlaDi Todo API Docs
 Dion[idion@idion.dev]
-1.0.3, 2020/12/03
+1.0.4, 2020/12/05
 :doctype: book
 :sectlinks:
 :docinfo: shared-head
@@ -15,6 +15,8 @@ Dion[idion@idion.dev]
 (2020/12/03 17:44) 카드에 유저 프로필 이미지 정보가 추가되었습니다.
 
 (2020/12/03 22:14) 로그 API가 추가되었습니다.
+
+(2020/12/05 12:22) 리스트 관련 API가 추가되었습니다.
 
 == v1 API
 
@@ -162,7 +164,7 @@ include::{snippets}/list-controller-test/list_생성_api_테스트/http-response
 
 include::{snippets}/list-controller-test/list_생성_api_테스트/response-fields.adoc[]
 
-==== PUT List: 리스트 수정 API
+==== PUT List: 리스트 이름 수정 API
 
 ===== CURL
 
@@ -191,6 +193,28 @@ include::{snippets}/list-controller-test/list_이름_수정_api_테스트/http-r
 ===== HTTP Response Fields
 
 include::{snippets}/list-controller-test/list_이름_수정_api_테스트/response-fields.adoc[]
+
+==== DELETE List: 리스트 보관 API
+
+===== CURL
+
+include::{snippets}/list-controller-test/list_보관_api_테스트/curl-request.adoc[]
+
+===== HTTPie
+
+include::{snippets}/list-controller-test/list_보관_api_테스트/httpie-request.adoc[]
+
+===== HTTP Request
+
+include::{snippets}/list-controller-test/list_보관_api_테스트/http-request.adoc[]
+
+===== HTTP Request Path Parameters
+
+include::{snippets}/list-controller-test/list_보관_api_테스트/path-parameters.adoc[]
+
+===== HTTP Response
+
+include::{snippets}/list-controller-test/list_보관_api_테스트/http-response.adoc[]
 
 === Log
 
