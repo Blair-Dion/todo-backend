@@ -1,7 +1,7 @@
 package dev.idion.bladitodo.web.v1.list;
 
 import dev.idion.bladitodo.service.list.ListService;
-import dev.idion.bladitodo.web.dto.ListDTO;
+import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,20 +25,21 @@ public class ListController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public ListDTO createList(@PathVariable Long boardId, @RequestBody ListRequest listRequest) {
-    ListDTO list = listService.createListInto(boardId, listRequest);
-    log.debug("생성된 list 정보: {}", list);
+  public DTOContainer createList(@PathVariable Long boardId, @RequestBody ListRequest listRequest) {
+    DTOContainer listCreateContainer = listService.createListInto(boardId, listRequest);
+    log.debug("생성된 list 정보: {}", listCreateContainer);
 
-    return list;
+    return listCreateContainer;
   }
 
   @PutMapping("/{listId}")
-  public ListDTO updateListName(@PathVariable Long boardId, @PathVariable Long listId,
+  public DTOContainer updateListName(@PathVariable Long boardId, @PathVariable Long listId,
       @RequestBody ListRequest listRequest) {
-    ListDTO list = listService.updateListNameOf(boardId, listId, listRequest);
-    log.debug("변경된 list 정보: {}", list);
+    DTOContainer listNameUpdateContainer = listService
+        .updateListNameOf(boardId, listId, listRequest);
+    log.debug("변경된 list 정보: {}", listNameUpdateContainer);
 
-    return list;
+    return listNameUpdateContainer;
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)
