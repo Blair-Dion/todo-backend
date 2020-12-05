@@ -4,6 +4,7 @@ import dev.idion.bladitodo.common.error.exception.UserNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.CardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
+import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.board.BoardRepository;
 import dev.idion.bladitodo.domain.card.Card;
 import dev.idion.bladitodo.domain.card.CardRepository;
@@ -16,6 +17,7 @@ import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
+import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +72,22 @@ public class CardService {
     logRepository.save(cardUpdateLog);
 
     return new DTOContainer(CardDTO.from(card), LogDTO.from(cardUpdateLog));
+  }
+
+  public DTOContainer moveCard(Long boardId, Long listId, Long cardId, CardMoveRequest request) {
+    Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+    listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+
+    log.debug("카드 이동 요청 객체: {}", request);
+    Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
+    List destinationList = listRepository.findById(request.getDestinationListId())
+        .orElseThrow(() -> new ListNotFoundException("이동하려하는 리스트가 존재하지 않습니다."));
+    card.moveCardTo(destinationList);
+
+    Log cardMoveLog = Log.cardMoveLog(listId, destinationList.getId(), board);
+    logRepository.save(cardMoveLog);
+
+    return new DTOContainer(CardDTO.from(card), LogDTO.from(cardMoveLog));
   }
 
   public void archiveCard(Long boardId, Long listId, Long cardId) {

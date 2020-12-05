@@ -77,4 +77,8 @@ public class Card extends BaseEntity {
     this.title = request.getTitle();
     this.contents = request.getContents();
   }
+
+  public void moveCardTo(List destinationList) {
+    this.setList(destinationList);
+  }
 }
