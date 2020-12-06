@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.service.log.LogService;
 import dev.idion.bladitodo.web.dto.LogDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.StringJoiner;
 import org.assertj.core.util.Lists;
@@ -55,11 +56,13 @@ class LogControllerTest {
             .withAfterContents("내용")
             .withFromListId(1L)
             .withToListId(1L)
+            .withLogTime(LocalDateTime.now())
             .build(),
         LogDTO.builder()
             .withId(1L)
             .withType(LogType.LIST_ADD)
             .withToListId(1L)
+            .withLogTime(LocalDateTime.now())
             .build()
     );
 
@@ -90,7 +93,8 @@ class LogControllerTest {
                 fieldWithPath("[].from_list_id").description("이전 리스트의 DB id")
                     .type(JsonFieldType.NUMBER).optional(),
                 fieldWithPath("[].to_list_id").description("이후 리스트의 DB id")
-                    .type(JsonFieldType.NUMBER).optional()
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("[].log_time").description("로그 생성 시각").type(JsonFieldType.STRING)
             )
         ));
   }
