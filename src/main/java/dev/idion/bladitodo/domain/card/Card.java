@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +21,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 @Getter
-@ToString(callSuper = true, of = {"id", "title", "contents", "isArchived", "user", "list",
+@ToString(callSuper = true, of = {"id", "title", "pos", "contents", "isArchived", "user", "list",
     "archivedDatetime"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "is_archived <> true")
@@ -35,7 +34,7 @@ public class Card extends BaseEntity {
 
   private String title;
   private String contents;
-  private int pos;
+  private Integer pos;
   private boolean isArchived;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -97,7 +96,6 @@ public class Card extends BaseEntity {
   }
 
   @PrePersist
-  @PreUpdate
   private void prepareIndex() {
     if (this.list != null) {
       this.pos = this.list.getCards().indexOf(this);
