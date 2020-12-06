@@ -2,6 +2,7 @@ package dev.idion.bladitodo.web.v1.card;
 
 import dev.idion.bladitodo.service.card.CardService;
 import dev.idion.bladitodo.web.dto.DTOContainer;
+import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,12 +36,20 @@ public class CardController {
 
   @PutMapping("/{cardId}")
   public DTOContainer updateCard(@PathVariable Long boardId, @PathVariable Long listId,
-      @PathVariable Long cardId,
-      @RequestBody CardRequest request) {
+      @PathVariable Long cardId, @RequestBody CardRequest request) {
     DTOContainer updatedCardContainer = cardService.updateCard(boardId, listId, cardId, request);
     log.debug("변경된 카드 정보: {}", updatedCardContainer);
 
     return updatedCardContainer;
+  }
+
+  @PutMapping("/{cardId}/move")
+  public DTOContainer moveCard(@PathVariable Long boardId, @PathVariable Long listId,
+      @PathVariable Long cardId, @RequestBody CardMoveRequest request) {
+    DTOContainer moveCardContainer = cardService.moveCard(boardId, listId, cardId, request);
+    log.debug("이동된 카드 정보: {}", moveCardContainer);
+
+    return moveCardContainer;
   }
 
   @ResponseStatus(HttpStatus.NO_CONTENT)

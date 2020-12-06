@@ -119,6 +119,15 @@ public class Log extends BaseEntity {
         .build();
   }
 
+  public static Log cardMoveLog(Long listId, Long destinationListId, Board board) {
+    return Log.builder()
+        .withType(LogType.CARD_MOVE)
+        .withFromListId(listId)
+        .withToListId(destinationListId)
+        .withBoard(board)
+        .build();
+  }
+
   public void setBoard(Board board) {
     if (this.board != null) {
       this.board.getLogs().remove(this);
