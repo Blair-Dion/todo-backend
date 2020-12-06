@@ -42,9 +42,9 @@ public class ListController {
     return listNameUpdateContainer;
   }
 
-  @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{listId}")
-  public void archiveListName(@PathVariable Long boardId, @PathVariable Long listId) {
-    listService.archiveList(boardId, listId);
+  public DTOContainer archiveListName(@PathVariable Long boardId, @PathVariable Long listId) {
+    log.debug("보관 처리할 리스트의 id: {}", listId);
+    return listService.archiveList(boardId, listId);
   }
 }

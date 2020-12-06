@@ -28,9 +28,10 @@ public class ListService {
   private final LogRepository logRepository;
 
   public DTOContainer createListInto(Long boardId, ListRequest request) {
+    Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+
     log.debug("리스트 요청 객체: {}", request);
     List list = request.toEntity();
-    Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
 
     list.setBoard(board);
     list = listRepository.save(list);
@@ -43,10 +44,13 @@ public class ListService {
   }
 
   public DTOContainer updateListNameOf(Long boardId, Long listId, ListRequest request) {
-    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+    Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
+    List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+    if (!board.getLists().contains(list)) {
+      throw new ListNotFoundException();
+    }
 
     log.debug("리스트 요청 객체: {}", request);
-    List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
     list.rename(request);
     log.debug("변경된 list 정보: {}", list);
 
@@ -56,14 +60,19 @@ public class ListService {
     return new DTOContainer(ListDTO.from(list), LogDTO.from(listNameUpdateLog));
   }
 
-  public void archiveList(Long boardId, Long listId) {
-    boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
-
+  public DTOContainer archiveList(Long boardId, Long listId) {
+    Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
+    if (!board.getLists().contains(list)) {
+      throw new ListNotFoundException();
+    }
+
     log.debug("보관할 리스트 정보: {}", list);
     list.archiveList();
 
     Log listArchiveLog = Log.listArchiveLog(list);
     logRepository.save(listArchiveLog);
+
+    return new DTOContainer(ListDTO.from(list), LogDTO.from(listArchiveLog));
   }
 }

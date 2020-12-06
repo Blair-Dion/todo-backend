@@ -30,6 +30,9 @@ Dion[idion@idion.dev]
 
 (2020/12/06 17:41) Log에 logtime이 추가되었습니다.
 
+(2020/12/06 20:54) Card와 List 보관도 Log등을 반환하도록 변경했습니다.
+또한 순서 정보도 반환됩니다.
+
 == v1 API
 
 === Board

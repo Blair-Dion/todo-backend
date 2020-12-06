@@ -87,6 +87,7 @@ public class MockAPIController {
         .withListId(list1.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
     CardDTO card2 = CardDTO.builder()
         .withId(2L)
@@ -95,6 +96,7 @@ public class MockAPIController {
         .withListId(list2.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
     CardDTO card3 = CardDTO.builder()
         .withId(3L)
@@ -103,6 +105,7 @@ public class MockAPIController {
         .withListId(list3.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
 
     list1.getCards().add(card1);

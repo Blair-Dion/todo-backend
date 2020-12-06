@@ -56,6 +56,7 @@ public class Card extends BaseEntity {
   }
 
   public void archiveCard() {
+    this.pos = null;
     this.isArchived = true;
     this.archivedDatetime = LocalDateTime.now();
   }

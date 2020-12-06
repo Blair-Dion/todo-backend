@@ -1,6 +1,5 @@
 package dev.idion.bladitodo.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.idion.bladitodo.domain.log.Log;
 import dev.idion.bladitodo.domain.log.LogType;
 import java.time.LocalDateTime;
@@ -22,8 +21,6 @@ public class LogDTO {
   private String afterContents;
   private Long fromListId;
   private Long toListId;
-
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
   private LocalDateTime logTime;
 
   @Builder(setterPrefix = "with")
