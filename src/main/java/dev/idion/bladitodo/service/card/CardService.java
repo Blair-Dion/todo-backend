@@ -90,7 +90,7 @@ public class CardService {
     return new DTOContainer(CardDTO.from(card), LogDTO.from(cardMoveLog));
   }
 
-  public void archiveCard(Long boardId, Long listId, Long cardId) {
+  public DTOContainer archiveCard(Long boardId, Long listId, Long cardId) {
     boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
 
@@ -102,5 +102,7 @@ public class CardService {
 
     Log cardArchiveLog = Log.cardArchiveLog(listId, beforeTitle, beforeContents, card);
     logRepository.save(cardArchiveLog);
+
+    return new DTOContainer(CardDTO.from(card), LogDTO.from(cardArchiveLog));
   }
 }
