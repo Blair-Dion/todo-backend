@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +35,7 @@ public class Card extends BaseEntity {
 
   private String title;
   private String contents;
+  private int pos;
   private boolean isArchived;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -69,6 +72,17 @@ public class Card extends BaseEntity {
     }
   }
 
+  public void setList(List list, int pos) {
+    if (this.list != null) {
+      this.list.getCards().remove(this);
+    }
+    this.list = list;
+
+    if (this.list != null) {
+      this.list.getCards().set(pos, this);
+    }
+  }
+
   public void setUser(User user) {
     this.user = user;
   }
@@ -80,5 +94,13 @@ public class Card extends BaseEntity {
 
   public void moveCardTo(List destinationList) {
     this.setList(destinationList);
+  }
+
+  @PrePersist
+  @PreUpdate
+  private void prepareIndex() {
+    if (this.list != null) {
+      this.pos = this.list.getCards().indexOf(this);
+    }
   }
 }

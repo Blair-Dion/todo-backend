@@ -116,6 +116,7 @@ class CardControllerTest {
                 fieldWithPath("result.id").description("카드의 DB id").type(JsonFieldType.NUMBER),
                 fieldWithPath("result.title").description("카드의 제목").type(JsonFieldType.STRING),
                 fieldWithPath("result.contents").description("카드의 내용").type(JsonFieldType.STRING),
+                fieldWithPath("result.pos").description("카드의 리스트에서의 순서").type(JsonFieldType.NUMBER),
                 fieldWithPath("result.user_id").description("카드를 생성한 user id")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
@@ -211,6 +212,7 @@ class CardControllerTest {
                 fieldWithPath("result.title").description("카드의 수정된 제목").type(JsonFieldType.STRING),
                 fieldWithPath("result.contents").description("카드의 수정된 내용")
                     .type(JsonFieldType.STRING),
+                fieldWithPath("result.pos").description("카드의 리스트에서의 순서").type(JsonFieldType.NUMBER),
                 fieldWithPath("result.user_id").description("카드를 생성한 user id")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
@@ -302,8 +304,8 @@ class CardControllerTest {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("result.id").description("카드의 DB id").type(JsonFieldType.NUMBER),
                 fieldWithPath("result.title").description("카드의 제목").type(JsonFieldType.STRING),
-                fieldWithPath("result.contents").description("카드의 내용")
-                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.contents").description("카드의 내용").type(JsonFieldType.STRING),
+                fieldWithPath("result.pos").description("카드의 리스트에서의 순서").type(JsonFieldType.NUMBER),
                 fieldWithPath("result.user_id").description("카드를 생성한 user id")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
