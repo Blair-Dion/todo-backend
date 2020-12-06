@@ -1,6 +1,6 @@
 = BlaDi Todo API Docs
 Dion[idion@idion.dev]
-1.0.5, 2020/12/06
+1.0.6, 2020/12/06
 :doctype: book
 :sectlinks:
 :docinfo: shared-head
@@ -25,6 +25,8 @@ Dion[idion@idion.dev]
 (2020/12/05 19:03) List 추가, 수정 API 응답이 변경되었습니다.
 
 (2020/12/06 13:33) Card 이동 API가 추가되었습니다.
+
+(2020/12/06 15:56) Card 위치정보가 추가되었습니다.
 
 == v1 API
 

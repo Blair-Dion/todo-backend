@@ -84,6 +84,8 @@ class BoardControllerTest {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].contents").description("카드의 내용")
                     .type(JsonFieldType.STRING),
+                fieldWithPath("lists[].cards[].pos").description("카드의 리스트에서의 순서")
+                    .type(JsonFieldType.NUMBER),
                 fieldWithPath("lists[].cards[].user_id").description("카드 소유자의 id")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("lists[].cards[].profile_image_url").description("카드 소유자의 프로필 이미지")

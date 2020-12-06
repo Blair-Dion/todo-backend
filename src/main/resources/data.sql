@@ -13,11 +13,11 @@ VALUES (1, 'TODO', false, null, 1, NOW(), 1, NOW(), 1),
        (2, 'DOING', false, null, 1, NOW(), 1, NOW(), 1),
        (3, 'DONE', false, null, 1, NOW(), 1, NOW(), 1);
 
-INSERT INTO card (title, contents, is_archived, archived_datetime, list_id, user_id,
+INSERT INTO card (title, contents, pos, is_archived, archived_datetime, list_id, user_id,
                   created_datetime, created_by, updated_datetime, updated_by)
-VALUES ('콩이 놀아주기', '재밌게 놀아주기', false, null, 1, 1, NOW(), 1, NOW(), 1),
-       ('Todo Project', '이번주까지 열심히 만들기', false, null, 2, 1, NOW(), 1, NOW(), 1),
-       ('취업하기', '성장할 수 있는 회사가기', false, null, 3, 1, NOW(), 1, NOW(), 1);
+VALUES ('콩이 놀아주기', '재밌게 놀아주기', 0, false, null, 1, 1, NOW(), 1, NOW(), 1),
+       ('Todo Project', '이번주까지 열심히 만들기', 0, false, null, 2, 1, NOW(), 1, NOW(), 1),
+       ('취업하기', '성장할 수 있는 회사가기', 0, false, null, 3, 1, NOW(), 1, NOW(), 1);
 
 INSERT INTO log (type, before_title, after_title, before_contents, after_contents, from_list_id,
                  to_list_id, board_id,

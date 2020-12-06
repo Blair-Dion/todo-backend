@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class List extends BaseEntity {
   private boolean isArchived;
 
   @OneToMany(mappedBy = "list")
+  @OrderBy("pos desc")
   private final java.util.List<Card> cards = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
