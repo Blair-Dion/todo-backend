@@ -1,7 +1,9 @@
 package dev.idion.bladitodo.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.idion.bladitodo.domain.log.Log;
 import dev.idion.bladitodo.domain.log.LogType;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,13 @@ public class LogDTO {
   private Long fromListId;
   private Long toListId;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+  private LocalDateTime logTime;
+
   @Builder(setterPrefix = "with")
   private LogDTO(Long id, LogType type, String beforeTitle, String afterTitle,
-      String beforeContents, String afterContents, Long fromListId, Long toListId) {
+      String beforeContents, String afterContents, Long fromListId, Long toListId,
+      LocalDateTime logTime) {
     this.id = id;
     this.type = type;
     this.beforeTitle = beforeTitle;
@@ -32,6 +38,7 @@ public class LogDTO {
     this.afterContents = afterContents;
     this.fromListId = fromListId;
     this.toListId = toListId;
+    this.logTime = logTime;
   }
 
   public static LogDTO from(Log log) {
@@ -44,6 +51,7 @@ public class LogDTO {
         .withAfterContents(log.getAfterContents())
         .withFromListId(log.getFromListId())
         .withToListId(log.getToListId())
+        .withLogTime(log.getCreatedDatetime())
         .build();
   }
 }
