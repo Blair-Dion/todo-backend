@@ -56,7 +56,7 @@ public class ListService {
     return new DTOContainer(ListDTO.from(list), LogDTO.from(listNameUpdateLog));
   }
 
-  public void archiveList(Long boardId, Long listId) {
+  public DTOContainer archiveList(Long boardId, Long listId) {
     boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
 
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
@@ -65,5 +65,7 @@ public class ListService {
 
     Log listArchiveLog = Log.listArchiveLog(list);
     logRepository.save(listArchiveLog);
+
+    return new DTOContainer(ListDTO.from(list), LogDTO.from(listArchiveLog));
   }
 }

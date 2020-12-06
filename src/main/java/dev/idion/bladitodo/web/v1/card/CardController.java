@@ -56,8 +56,7 @@ public class CardController {
   public DTOContainer archiveCard(@PathVariable Long boardId, @PathVariable Long listId,
       @PathVariable Long cardId) {
     log.debug("보관 처리할 카드의 id: {}", cardId);
-    DTOContainer archiveCardContainer = cardService.archiveCard(boardId, listId, cardId);
 
-    return archiveCardContainer;
+    return cardService.archiveCard(boardId, listId, cardId);
   }
 }
