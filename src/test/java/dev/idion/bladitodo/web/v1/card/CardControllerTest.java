@@ -26,6 +26,7 @@ import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.time.LocalDateTime;
 import java.util.StringJoiner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,6 +84,7 @@ class CardControllerTest {
         .withToListId(listId)
         .withAfterTitle(title)
         .withAfterContents(contents)
+        .withLogTime(LocalDateTime.now())
         .build();
     // DTOContainer
     DTOContainer container = new DTOContainer(cardDTO, logDTO);
@@ -140,7 +142,8 @@ class CardControllerTest {
                 fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
                     .type(JsonFieldType.NUMBER).optional(),
                 fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
-                    .type(JsonFieldType.NUMBER).optional()
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.log_time").description("로그 생성 시각").type(JsonFieldType.STRING)
             )
         ));
   }
@@ -177,6 +180,7 @@ class CardControllerTest {
         .withAfterTitle(title)
         .withBeforeContents("내용")
         .withAfterContents(contents)
+        .withLogTime(LocalDateTime.now())
         .build();
     // DTOContainer
     DTOContainer container = new DTOContainer(cardDTO, logDTO);
@@ -236,7 +240,8 @@ class CardControllerTest {
                 fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
                     .type(JsonFieldType.NUMBER).optional(),
                 fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
-                    .type(JsonFieldType.NUMBER).optional()
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.log_time").description("로그 생성 시각").type(JsonFieldType.STRING)
             )
         ));
   }
@@ -270,6 +275,7 @@ class CardControllerTest {
         .withType(LogType.CARD_MOVE)
         .withFromListId(listId)
         .withToListId(destinationListId)
+        .withLogTime(LocalDateTime.now())
         .build();
     // DTOContainer
     DTOContainer container = new DTOContainer(cardDTO, logDTO);
@@ -329,7 +335,8 @@ class CardControllerTest {
                 fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
                     .type(JsonFieldType.NUMBER).optional(),
                 fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
-                    .type(JsonFieldType.NUMBER).optional()
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.log_time").description("로그 생성 시각").type(JsonFieldType.STRING)
             )
         ));
   }

@@ -28,6 +28,8 @@ Dion[idion@idion.dev]
 
 (2020/12/06 15:56) Card 위치정보가 추가되었습니다.
 
+(2020/12/06 17:41) Log에 logtime이 추가되었습니다.
+
 == v1 API
 
 === Board
