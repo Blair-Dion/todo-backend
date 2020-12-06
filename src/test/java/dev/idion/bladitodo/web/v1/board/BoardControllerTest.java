@@ -127,6 +127,7 @@ class BoardControllerTest {
         .withListId(list1.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
     CardDTO card2 = CardDTO.builder()
         .withId(2L)
@@ -135,6 +136,7 @@ class BoardControllerTest {
         .withListId(list2.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
     CardDTO card3 = CardDTO.builder()
         .withId(3L)
@@ -143,6 +145,7 @@ class BoardControllerTest {
         .withListId(list3.getId())
         .withUserId(user.getUserId())
         .withProfileImageUrl(user.getProfileImageUrl())
+        .withPos(0)
         .build();
 
     list1.getCards().add(card1);

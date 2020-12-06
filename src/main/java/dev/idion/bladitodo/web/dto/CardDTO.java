@@ -15,7 +15,7 @@ public class CardDTO implements ContainableDTO {
   private Long id;
   private String title;
   private String contents;
-  private int pos;
+  private Integer pos;
   private boolean isArchived;
   private String userId;
   private String profileImageUrl;
@@ -23,7 +23,7 @@ public class CardDTO implements ContainableDTO {
   private LocalDateTime archivedDatetime;
 
   @Builder(setterPrefix = "with")
-  private CardDTO(Long id, String title, String contents, int pos, boolean isArchived,
+  private CardDTO(Long id, String title, String contents, Integer pos, boolean isArchived,
       String userId, String profileImageUrl, Long listId, LocalDateTime archivedDatetime) {
     this.id = id;
     this.title = title;

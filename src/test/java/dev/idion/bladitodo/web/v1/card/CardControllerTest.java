@@ -75,6 +75,7 @@ class CardControllerTest {
         .withUserId(userId)
         .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
+        .withPos(0)
         .build();
     // LogDTO
     LogDTO logDTO = LogDTO.builder()
@@ -169,6 +170,7 @@ class CardControllerTest {
         .withUserId(userId)
         .withProfileImageUrl(profileImageUrl)
         .withListId(listId)
+        .withPos(0)
         .build();
     // LogDTO
     LogDTO logDTO = LogDTO.builder()
@@ -268,6 +270,7 @@ class CardControllerTest {
         .withUserId(userId)
         .withProfileImageUrl(profileImageUrl)
         .withListId(destinationListId)
+        .withPos(0)
         .build();
     // LogDTO
     LogDTO logDTO = LogDTO.builder()
@@ -348,14 +351,39 @@ class CardControllerTest {
     long listId = 1L;
     long cardId = 4L;
 
+    String title = "제목";
+    String contents = "내용";
+    String userId = "ksundong";
+    String profileImageUrl = "https://avatars0.githubusercontent.com/u/38597469?s=88&u=4dec19ec378bfb64c9b4a00c4d63e7805dac9c6c&v=4";
+    // CardDTO
+    CardDTO cardDTO = CardDTO.builder()
+        .withId(cardId)
+        .withTitle(title)
+        .withContents(contents)
+        .withUserId(userId)
+        .withProfileImageUrl(profileImageUrl)
+        .withListId(listId)
+        .withPos(0)
+        .build();
+    // LogDTO
+    LogDTO logDTO = LogDTO.builder()
+        .withId(1L)
+        .withType(LogType.CARD_ARCHIVE)
+        .withFromListId(listId)
+        .withLogTime(LocalDateTime.now())
+        .build();
+    // DTOContainer
+    DTOContainer container = new DTOContainer(cardDTO, logDTO);
+
     //when
+    when(cardService.archiveCard(boardId, listId, cardId)).thenReturn(container);
 
     //then
     mockMvc.perform(
         delete(PRE_URI + "/board/{board_id}/list/{list_id}/card/{card_id}", boardId, listId,
             cardId))
         .andDo(print())
-        .andExpect(status().isNoContent())
+        .andExpect(status().isOk())
         .andDo(document("{class-name}/{method-name}",
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
@@ -363,7 +391,41 @@ class CardControllerTest {
                 parameterWithName("board_id").description("카드가 속한 보드의 DB id"),
                 parameterWithName("list_id").description("보관할 카드의 list DB id"),
                 parameterWithName("card_id").description("보관할 카드의 DB id")
-            )));
+            ),
+            responseFields(
+                fieldWithPath("result_type").description("result의 DTO 타입")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.id").description("카드의 DB id").type(JsonFieldType.NUMBER),
+                fieldWithPath("result.title").description("카드의 제목").type(JsonFieldType.STRING),
+                fieldWithPath("result.contents").description("카드의 내용").type(JsonFieldType.STRING),
+                fieldWithPath("result.pos").description("카드의 리스트에서의 순서").type(JsonFieldType.NUMBER),
+                fieldWithPath("result.user_id").description("카드를 생성한 user id")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.profile_image_url").description("카드 소유자의 프로필 이미지")
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("result.list_id").description("카드가 속한 List의 DB id")
+                    .type(JsonFieldType.NUMBER),
+                fieldWithPath("result.archived").description("카드가 보관처리 되었는지 여부")
+                    .type(JsonFieldType.BOOLEAN),
+                fieldWithPath("result.archived_datetime").description("카드 보관처리 일자").optional()
+                    .type(JsonFieldType.STRING),
+                fieldWithPath("log.id").description("로그의 DB id").type(JsonFieldType.NUMBER),
+                typeField("log.type"),
+                fieldWithPath("log.before_title").description("이전 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_title").description("이후 제목").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.before_contents").description("이전 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.after_contents").description("이후 내용").type(JsonFieldType.STRING)
+                    .optional(),
+                fieldWithPath("log.from_list_id").description("이전 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.to_list_id").description("이후 리스트의 DB id")
+                    .type(JsonFieldType.NUMBER).optional(),
+                fieldWithPath("log.log_time").description("로그 생성 시각").type(JsonFieldType.STRING)
+            )
+        ));
   }
 
   private FieldDescriptor typeField(String path) {
