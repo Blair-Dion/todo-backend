@@ -4,6 +4,7 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.8'
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'dev.idion'
@@ -72,4 +73,60 @@ configurations {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+// 추가시 gradle/Tasks/verification에 jacocoTestReport, jacocoTestVerification이 생성됨.
+jacoco {
+    // JaCoCo 버전
+    toolVersion = '0.8.6'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled false
+        csv.enabled false
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.50
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.50
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 150
+            }
+
+            excludes = [
+                    '*.Q*' // QueryDSL 관련 클래스 제외
+            ]
+        }
+    }
+}
+
+task testCoverage(type: Test) {
+    group 'verification'
+    description 'Unit test and Coverage'
+
+    dependsOn(':test',
+            ':jacocoTestReport',
+            ':jacocoTestCoverageVerification')
+
+    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
+    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
 }
