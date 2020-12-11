@@ -4,6 +4,7 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.8'
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'dev.idion'
@@ -72,4 +73,10 @@ configurations {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+// 추가시 gradle/Tasks/verification에 jacocoTestReport, jacocoTestVerification이 생성됨.
+jacoco {
+    // JaCoCo 버전
+    toolVersion = '0.8.6'
 }
