@@ -9,6 +9,8 @@
   - Mockito
   - AssertJ
   - Project Lombok
+  - Flyway Migration
+  - Jacoco
 - Spring Boot 2.4.x
   - Spring Web MVC
   - Spring Data JPA
