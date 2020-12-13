@@ -22,7 +22,9 @@
 
 ## API Document
 
-작성예정
+http://54.180.198.188/api/docs/api-docs.html
+
+API 문서입니다. 지속적으로 업데이트 하고 있습니다.
 
 ## How To Build
 
