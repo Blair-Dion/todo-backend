@@ -43,6 +43,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  flyway: # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-data-migration 참고
+    baseline-on-migrate: true # 비어있지 않은 db schema를 migration할 때, baseline을 사용할 것인지 여부
+    baseline-version: 1 # 이 버전 이후로 마이그레이션을 진행한다.
+    baseline-description: 기본 스키마 # baseline 적용시 기존 스키마에 태그를 지정
 
 ---
 
@@ -60,6 +64,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  flyway: # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-data-migration 참고
+    baseline-on-migrate: true # 비어있지 않은 db schema를 migration할 때, baseline을 사용할 것인지 여부
+    baseline-version: 1 # 이 버전 이후로 마이그레이션을 진행한다.
+    baseline-description: 기본 스키마 # baseline 적용시 기존 스키마에 태그를 지정
 logging:
   level:
     web: info
