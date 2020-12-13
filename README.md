@@ -28,5 +28,10 @@ API 문서입니다. 지속적으로 업데이트 하고 있습니다.
 
 ## How To Build
 
-작성예정
+`./gradlew build`
 
+## How To Run
+
+`nohup java -jar build/libs/bladi-todo*.jar --spring.profiles.active={profile} &`
+
+nohup.out에 로그가 남게 됩니다.
