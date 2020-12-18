@@ -4,7 +4,6 @@ import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.card.Card;
 import dev.idion.bladitodo.domain.list.List;
-import dev.idion.bladitodo.web.v1.card.request.CardRequest;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -58,13 +57,13 @@ public class Log extends BaseEntity {
     this.board = board;
   }
 
-  public static Log cardAddLog(Long listId, CardRequest request, Board board) {
+  public static Log cardAddLog(Long listId, Card card, Board board) {
     return Log.builder()
         .withType(LogType.CARD_ADD)
         .withFromListId(listId)
         .withToListId(listId)
-        .withAfterTitle(request.getTitle())
-        .withAfterContents(request.getContents())
+        .withAfterTitle(card.getTitle())
+        .withAfterContents(card.getContents())
         .withBoard(board)
         .build();
   }
