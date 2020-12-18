@@ -53,7 +53,7 @@ public class CardService {
     card = cardRepository.save(card);
     log.debug("저장된 card 정보: {}", card);
 
-    Log cardAddLog = Log.cardAddLog(listId, request, list.getBoard());
+    Log cardAddLog = Log.cardAddLog(listId, card, list.getBoard());
     logRepository.save(cardAddLog);
 
     return new DTOContainer(CardDTO.from(card), LogDTO.from(cardAddLog));
@@ -73,7 +73,7 @@ public class CardService {
     log.debug("카드요청 객체: {}", request);
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
-    card.updateTitleAndContents(request);
+    card.updateTitleAndContents(request.getTitle(), request.getContents());
 
     log.debug("변경된 card 정보: {}", card);
 

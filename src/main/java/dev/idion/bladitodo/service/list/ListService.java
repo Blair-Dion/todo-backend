@@ -51,7 +51,7 @@ public class ListService {
     }
 
     log.debug("리스트 요청 객체: {}", request);
-    list.rename(request);
+    list.rename(request.getName());
     log.debug("변경된 list 정보: {}", list);
 
     Log listNameUpdateLog = Log.listRenameLog(list);
