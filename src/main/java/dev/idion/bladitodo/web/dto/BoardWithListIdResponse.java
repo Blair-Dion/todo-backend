@@ -2,7 +2,6 @@ package dev.idion.bladitodo.web.dto;
 
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.list.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ public class BoardWithListIdResponse {
 
   private Long boardId;
   private String name;
-  private java.util.List<Long> listIds = new ArrayList<>();
+  private java.util.List<Long> listIds;
 
   @Builder(setterPrefix = "with")
   private BoardWithListIdResponse(Long boardId, String name, java.util.List<Long> listIds) {
