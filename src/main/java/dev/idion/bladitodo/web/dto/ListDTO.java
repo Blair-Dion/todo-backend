@@ -1,8 +1,8 @@
 package dev.idion.bladitodo.web.dto;
 
+import dev.idion.bladitodo.common.error.exception.IllegalObjectFoundException;
 import dev.idion.bladitodo.domain.list.List;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class ListDTO implements ContainableDTO {
   private boolean isArchived;
   private Long boardId;
   private LocalDateTime archivedDatetime;
-  private java.util.List<CardDTO> cards = new ArrayList<>();
+  private java.util.List<CardDTO> cards;
 
   @Builder(setterPrefix = "with")
   private ListDTO(Long id, String name, boolean isArchived, Long boardId,
@@ -31,6 +31,10 @@ public class ListDTO implements ContainableDTO {
   }
 
   public static ListDTO from(List list) {
+    if (list.getBoard() == null) {
+      throw new IllegalObjectFoundException("요청을 수행하는 도중 Board에 속하지 않은 List가 발견되었습니다.");
+    }
+
     return ListDTO.builder()
         .withId(list.getId())
         .withName(list.getName())
