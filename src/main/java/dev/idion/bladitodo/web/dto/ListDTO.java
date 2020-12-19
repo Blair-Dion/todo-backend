@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @ToString
 public class ListDTO implements ContainableDTO {
@@ -32,6 +34,7 @@ public class ListDTO implements ContainableDTO {
 
   public static ListDTO from(List list) {
     if (list.getBoard() == null) {
+      log.error("유효하지 않은 List 객체: {}", list);
       throw new IllegalObjectFoundException("요청을 수행하는 도중 Board에 속하지 않은 List가 발견되었습니다.");
     }
 
