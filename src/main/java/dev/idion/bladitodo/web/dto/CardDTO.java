@@ -1,15 +1,16 @@
 package dev.idion.bladitodo.web.dto;
 
+import dev.idion.bladitodo.common.error.exception.IllegalObjectFoundException;
 import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @ToString
-@NoArgsConstructor
 public class CardDTO implements ContainableDTO {
 
   private Long id;
@@ -37,6 +38,15 @@ public class CardDTO implements ContainableDTO {
   }
 
   public static CardDTO from(Card card) {
+    if (card.getList() == null) {
+      log.error("List에 속하지 않은 유효하지 않은 Card 객체: {}", card);
+      throw new IllegalObjectFoundException("요청을 수행하는 도중 List에 속하지 않은 Card가 발견되었습니다.");
+    }
+    if (card.getUser() == null) {
+      log.error("User와 연결되지 않은 유효하지 않은 Card 객체: {}", card);
+      throw new IllegalObjectFoundException("요청을 수행하는 도중 User와 연결되지 않은 Card가 발견되었습니다.");
+    }
+
     return CardDTO.builder()
         .withId(card.getId())
         .withTitle(card.getTitle())

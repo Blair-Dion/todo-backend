@@ -1,22 +1,19 @@
 package dev.idion.bladitodo.web.dto;
 
 import dev.idion.bladitodo.domain.board.Board;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class BoardDTO {
 
   private Long id;
   private String name;
-  private java.util.List<ListDTO> lists = new ArrayList<>();
+  private java.util.List<ListDTO> lists;
 
   @Builder(setterPrefix = "with")
   private BoardDTO(Long id, String name, List<ListDTO> lists) {
