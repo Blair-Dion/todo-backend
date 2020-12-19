@@ -5,12 +5,10 @@ import dev.idion.bladitodo.domain.log.LogType;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class LogDTO {
 
   private Long id;

@@ -4,12 +4,10 @@ import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class CardDTO implements ContainableDTO {
 
   private Long id;

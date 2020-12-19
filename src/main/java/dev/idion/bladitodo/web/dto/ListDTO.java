@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class ListDTO implements ContainableDTO {
 
   private Long id;

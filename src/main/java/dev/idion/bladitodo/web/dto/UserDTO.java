@@ -3,10 +3,10 @@ package dev.idion.bladitodo.web.dto;
 import dev.idion.bladitodo.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString
 public class UserDTO {
 
   private Long id;
