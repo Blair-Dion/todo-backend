@@ -32,7 +32,7 @@ class BoardServiceTest {
   BoardDTO boardDTO;
 
   long existBoardId = 1L;
-  long notExistBoardId = 999999L;
+  long notExistBoardId = 12345678987654L;
 
   @BeforeEach
   void setUp() {
