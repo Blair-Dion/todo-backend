@@ -13,6 +13,7 @@ import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.ListDTO;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
+import java.time.Clock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class ListService {
   private final ListRepository listRepository;
   private final BoardRepository boardRepository;
   private final LogRepository logRepository;
+  private final Clock clock;
 
   public DTOContainer createListInto(Long boardId, ListRequest request) {
     if (request == null) {
@@ -77,7 +79,7 @@ public class ListService {
     }
 
     log.debug("보관할 리스트 정보: {}", list);
-    list.archiveList();
+    list.archiveList(clock);
 
     Log listArchiveLog = Log.listArchiveLog(list);
     logRepository.save(listArchiveLog);

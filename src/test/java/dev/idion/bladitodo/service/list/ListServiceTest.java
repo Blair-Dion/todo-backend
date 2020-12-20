@@ -1,8 +1,8 @@
 package dev.idion.bladitodo.service.list;
 
+import static dev.idion.bladitodo.common.TimeConstants.ASIA_SEOUL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -17,10 +17,14 @@ import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.list.ListRepository;
 import dev.idion.bladitodo.domain.log.Log;
 import dev.idion.bladitodo.domain.log.LogRepository;
+import dev.idion.bladitodo.domain.log.LogType;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.ListDTO;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +37,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ListServiceTest {
 
+  final static LocalDate LOCAL_DATE = LocalDate.of(2020, 12, 20);
+
   @InjectMocks
   ListService listService;
 
@@ -44,6 +50,11 @@ class ListServiceTest {
 
   @Mock
   LogRepository logRepository;
+
+  @Mock
+  Clock clock;
+
+  Clock fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ASIA_SEOUL).toInstant(), ASIA_SEOUL);
 
   long existBoardId = 1L;
   long notExistBoardId = 123456789876L;
@@ -90,8 +101,12 @@ class ListServiceTest {
 
     DTOContainer container = listService.createListInto(existBoardId, listRequest);
 
-    assertThat(container).isNotNull();
-    assertThat(container).usingRecursiveComparison().isEqualTo(dtoContainer);
+    assertThat(container).isNotNull().usingRecursiveComparison().isEqualTo(dtoContainer);
+
+    ListDTO result = (ListDTO) container.getResult();
+    assertThat(result.getName()).isEqualTo(listRequest.getName());
+    assertThat(result.isArchived()).isFalse();
+    assertThat(container.getLog().getType()).isEqualTo(LogType.LIST_ADD);
   }
 
   @Test
@@ -115,10 +130,11 @@ class ListServiceTest {
   @Test
   @DisplayName("list 이름 변경 성공 테스트")
   void updateListNameOfTest() {
-    list.rename(renameRequest.getName());
-    ListDTO renamedListDTO = ListDTO.from(list);
+    List renamedList = renameRequest.toEntity();
+    renamedList.setBoard(board);
+    ListDTO renamedListDTO = ListDTO.from(renamedList);
 
-    Log listRenameLog = Log.listRenameLog(list);
+    Log listRenameLog = Log.listRenameLog(renamedList);
     LogDTO listRenameLogDTO = LogDTO.from(listRenameLog);
 
     DTOContainer dtoContainer = new DTOContainer(renamedListDTO, listRenameLogDTO);
@@ -129,8 +145,12 @@ class ListServiceTest {
     DTOContainer container = listService
         .updateListNameOf(existBoardId, existListId, renameRequest);
 
-    assertThat(container).isNotNull();
-    assertThat(container).usingRecursiveComparison().isEqualTo(dtoContainer);
+    assertThat(container).isNotNull().usingRecursiveComparison().isEqualTo(dtoContainer);
+
+    ListDTO result = (ListDTO) container.getResult();
+    assertThat(result.getName()).isEqualTo(renameRequest.getName());
+    assertThat(result.isArchived()).isFalse();
+    assertThat(container.getLog().getType()).isEqualTo(LogType.LIST_RENAME);
   }
 
   @Test
@@ -165,7 +185,8 @@ class ListServiceTest {
     given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
 
     assertThatThrownBy(
-        () -> listService.updateListNameOf(existBoardId, existListId, listRequest))
+        () -> listService.updateListNameOf(existBoardId, existListId, listRequest),
+        "Board안에 List가 존재하지 않는 경우 ListNotFoundException을 반환해야한다.")
         .isInstanceOf(ListNotFoundException.class)
         .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
   }
@@ -182,18 +203,65 @@ class ListServiceTest {
   @Test
   @DisplayName("list 보관 성공 테스트")
   void archiveListTest() {
-    fail("Not Implemented");
+    given(clock.instant()).willReturn(fixedClock.instant());
+    given(clock.getZone()).willReturn(fixedClock.getZone());
+
+    List archivedList = listRequest.toEntity();
+    archivedList.setBoard(board);
+    archivedList.archiveList(clock);
+
+    Log listArchiveLog = Log.listArchiveLog(archivedList);
+
+    DTOContainer dtoContainer = new DTOContainer(ListDTO.from(archivedList),
+        LogDTO.from(listArchiveLog));
+
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    DTOContainer container = listService.archiveList(existBoardId, existListId);
+
+    assertThat(container).isNotNull().usingRecursiveComparison().isEqualTo(dtoContainer);
+
+    ListDTO result = (ListDTO) container.getResult();
+    assertThat(result.getName()).isEqualTo(listRequest.getName());
+    assertThat(result.isArchived()).isTrue();
+    assertThat(result.getArchivedDatetime()).isEqualTo(LocalDateTime.now(fixedClock));
+    assertThat(container.getLog().getType()).isEqualTo(LogType.LIST_ARCHIVE);
   }
 
   @Test
   @DisplayName("list 보관 실패 - Board가 존재하지 않음 테스트")
   void archiveListBoardNotFoundTest() {
-    fail("Not Implemented");
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> listService.archiveList(notExistBoardId, existListId))
+        .isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
   }
 
   @Test
   @DisplayName("list 보관 실패 - List가 존재하지 않음 테스트")
   void archiveListListNotFoundTest() {
-    fail("Not Implemented");
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> listService.archiveList(existBoardId, notExistListId))
+        .isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("list 보관 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void archiveListBoardNotContainsListTest() {
+    list.setBoard(null);
+
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    assertThatThrownBy(
+        () -> listService.archiveList(existBoardId, existListId),
+        "Board안에 List가 존재하지 않는 경우 ListNotFoundException을 반환해야한다.")
+        .isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
   }
 }
