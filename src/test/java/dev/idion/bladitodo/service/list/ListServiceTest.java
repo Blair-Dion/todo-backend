@@ -1,11 +1,14 @@
 package dev.idion.bladitodo.service.list;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
+import dev.idion.bladitodo.common.error.ErrorCode;
+import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.board.BoardRepository;
 import dev.idion.bladitodo.domain.list.List;
@@ -41,6 +44,7 @@ class ListServiceTest {
   LogRepository logRepository;
 
   long existBoardId = 1L;
+  long notExistBoardId = 123456789876L;
   long existListId = 1L;
   String boardName = "보드 이름";
   String listName = "리스트 이름";
@@ -88,7 +92,12 @@ class ListServiceTest {
   @Test
   @DisplayName("list 생성 실패 - Board가 존재하지 않음 테스트")
   void listCreateBoardNotFoundTest() {
-    fail("Not Implemented");
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> {
+      listService.createListInto(notExistBoardId, listRequest);
+    }).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
   }
 
   @Test
