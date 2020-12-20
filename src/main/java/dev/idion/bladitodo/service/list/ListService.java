@@ -49,6 +49,10 @@ public class ListService {
   }
 
   public DTOContainer updateListNameOf(Long boardId, Long listId, ListRequest request) {
+    if (request == null) {
+      throw new BadRequestException("요청이 올바르지 않습니다 ListRequest는 반드시 포함되어야 합니다.");
+    }
+
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
     if (!board.getLists().contains(list)) {
