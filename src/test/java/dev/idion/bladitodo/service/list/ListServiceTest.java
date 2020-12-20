@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import dev.idion.bladitodo.common.error.ErrorCode;
+import dev.idion.bladitodo.common.error.exception.BadRequestException;
 import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.board.BoardRepository;
@@ -94,16 +95,17 @@ class ListServiceTest {
   void listCreateBoardNotFoundTest() {
     given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> {
-      listService.createListInto(notExistBoardId, listRequest);
-    }).isInstanceOf(BoardNotFoundException.class)
+    assertThatThrownBy(() -> listService.createListInto(notExistBoardId, listRequest))
+        .isInstanceOf(BoardNotFoundException.class)
         .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
   }
 
   @Test
   @DisplayName("list 생성 실패 - Request가 Null인경우 테스트")
   void listCreateRequestNullTest() {
-    fail("Not Implemented");
+    assertThatThrownBy(() -> listService.createListInto(existBoardId, null))
+        .isInstanceOf(BadRequestException.class)
+        .hasMessage("요청이 올바르지 않습니다 ListRequest는 반드시 포함되어야 합니다.");
   }
 
   @Test

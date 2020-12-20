@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.service.list;
 
+import dev.idion.bladitodo.common.error.exception.BadRequestException;
 import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
 import dev.idion.bladitodo.domain.board.Board;
@@ -12,7 +13,6 @@ import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.ListDTO;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.list.request.ListRequest;
-import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,11 @@ public class ListService {
   private final BoardRepository boardRepository;
   private final LogRepository logRepository;
 
-  public DTOContainer createListInto(Long boardId, @Nonnull ListRequest request) {
+  public DTOContainer createListInto(Long boardId, ListRequest request) {
+    if (request == null) {
+      throw new BadRequestException("요청이 올바르지 않습니다 ListRequest는 반드시 포함되어야 합니다.");
+    }
+
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
 
     log.debug("리스트 요청 객체: {}", request);
@@ -44,7 +48,7 @@ public class ListService {
     return new DTOContainer(ListDTO.from(list), LogDTO.from(listAddLog));
   }
 
-  public DTOContainer updateListNameOf(Long boardId, Long listId, @Nonnull ListRequest request) {
+  public DTOContainer updateListNameOf(Long boardId, Long listId, ListRequest request) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
     if (!board.getLists().contains(list)) {
