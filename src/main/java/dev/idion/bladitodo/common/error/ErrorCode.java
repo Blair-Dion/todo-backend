@@ -12,6 +12,7 @@ public enum ErrorCode {
   METHOD_NOT_ALLOWED(405, "COM004", "Change Http Method"),
   INTERNAL_SERVER_ERROR(500, "COM005", "백엔드 개발자라 죄송합니다..."),
   ILLEGAL_OBJECT_FOUND(500, "COM006", "요청을 처리하는 도중 유효하지 않은 시도가 발생하였습니다."),
+  BAD_REQUEST(400, "COM007", "요청은 처리될 수 없습니다."),
 
   // user
   USER_NOT_FOUND(404, "U001", " 해당 사용자가 존재하지 않습니다."),
