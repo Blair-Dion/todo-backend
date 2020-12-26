@@ -40,9 +40,13 @@ class CardServiceTest {
   final long notExistBoardId = 1234567898765432L;
   final long existListId = 1L;
   final long notExistListId = 1234567898765432L;
+  final long existCardId = 1L;
+  final long notExistCardId = 1234567898765432L;
   final long existUserId = 1L;
   final String title = "카드 제목";
   final String contents = "카드 내용";
+  final String editTitle = "수정한 제목";
+  final String editContents = "수정한 내용";
 
   @InjectMocks
   CardService cardService;
@@ -68,9 +72,11 @@ class CardServiceTest {
   CardRequest request;
   Card card;
   Log cardAddLog;
+  Log cardUpdateLog;
 
   CardDTO cardDTO;
   LogDTO cardAddLogDTO;
+  LogDTO cardUpdateLogDTO;
   DTOContainer dtoContainer;
 
   @BeforeEach
@@ -100,7 +106,7 @@ class CardServiceTest {
     dtoContainer = new DTOContainer(cardDTO, cardAddLogDTO);
 
     given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
-    given(listRepository.findById(existListId)).willReturn(Optional.of(list));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
     given(userRepository.findById(eq(existUserId))).willReturn(Optional.of(user));
     given(cardRepository.save(any(Card.class))).willReturn(card);
 
@@ -155,5 +161,44 @@ class CardServiceTest {
     assertThatThrownBy(() -> cardService.createCardInto(existBoardId, existListId, request))
         .isInstanceOf(ListNotFoundException.class)
         .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 내용 수정 성공 테스트")
+  void updateCardTest() {
+    //given
+    Card beforeCard = card;
+    arrangeCardUpdate(beforeCard);
+
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(beforeCard));
+
+    //when
+    DTOContainer container = cardService
+        .updateCard(existBoardId, existListId, existCardId, request);
+    CardDTO resultCardDTO = (CardDTO) container.getResult();
+
+    //then
+    assertThat(container).usingRecursiveComparison().isEqualTo(dtoContainer);
+    assertThat(resultCardDTO.getTitle()).isEqualTo(editTitle);
+    assertThat(resultCardDTO.getContents()).isEqualTo(editContents);
+    assertThat(container.getLog().getType()).isEqualTo(LogType.CARD_TITLE_AND_CONTENT_UPDATE);
+  }
+
+  private void arrangeCardUpdate(Card beforeCard) {
+    request.setTitle(editTitle);
+    request.setContents(editContents);
+
+    card = request.toEntity();
+    card.setList(list);
+    card.setUser(user);
+
+    cardDTO = CardDTO.from(card);
+
+    cardUpdateLog = Log
+        .cardUpdateLog(existListId, beforeCard.getTitle(), beforeCard.getContents(), card);
+    cardUpdateLogDTO = LogDTO.from(cardUpdateLog);
+    dtoContainer = new DTOContainer(cardDTO, cardUpdateLogDTO);
   }
 }
