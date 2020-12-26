@@ -437,6 +437,101 @@ class CardServiceTest {
     assertThat(result).usingRecursiveComparison().isEqualTo(dtoContainer);
   }
 
+
+  @Test
+  @DisplayName("card 이동 실패 - Board가 존재하지 않음 테스트")
+  void moveCardBoardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(notExistBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - List가 존재하지 않음 테스트")
+  void moveCardListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, notExistListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - 이동하려하는 List가 존재하지 않음 테스트")
+  void moveCardDestinationListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, notExistListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - Card가 존재하지 않음 테스트")
+  void moveCardCardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(notExistCardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, notExistCardId, cardMoveRequest)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void moveCardBoardNotContainsListTest() {
+    //given
+    list.setBoard(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - List에 해당 Card가 존재하지 않음 테스트")
+  void moveCardListNotContainsCardTest() throws NoSuchFieldException, IllegalAccessException {
+    //given
+    arrangeMoveCard();
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage("이동하려하는 리스트가 존재하지 않습니다.");
+  }
+
   private void arrangeMoveCard() throws NoSuchFieldException, IllegalAccessException {
     destinationList = List.builder().build();
     cardMoveRequest = new CardMoveRequest();
