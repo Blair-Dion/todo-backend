@@ -19,6 +19,7 @@ import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.time.Clock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class CardService {
   private final ListRepository listRepository;
   private final BoardRepository boardRepository;
   private final LogRepository logRepository;
+  private final Clock clock;
 
   public DTOContainer createCardInto(Long boardId, Long listId, CardRequest request) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
@@ -120,7 +122,7 @@ public class CardService {
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
     log.debug("보관할 카드 정보: {}", card);
-    card.archiveCard();
+    card.archiveCard(clock);
 
     Log cardArchiveLog = Log.cardArchiveLog(listId, beforeTitle, beforeContents, card);
     logRepository.save(cardArchiveLog);
