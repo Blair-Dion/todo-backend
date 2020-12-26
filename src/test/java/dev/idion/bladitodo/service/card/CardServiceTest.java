@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 
 import dev.idion.bladitodo.common.error.ErrorCode;
 import dev.idion.bladitodo.common.error.exception.domain.BoardNotFoundException;
+import dev.idion.bladitodo.common.error.exception.domain.CardNotFoundException;
 import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.board.BoardRepository;
@@ -184,6 +185,54 @@ class CardServiceTest {
     assertThat(resultCardDTO.getTitle()).isEqualTo(editTitle);
     assertThat(resultCardDTO.getContents()).isEqualTo(editContents);
     assertThat(container.getLog().getType()).isEqualTo(LogType.CARD_TITLE_AND_CONTENT_UPDATE);
+  }
+
+  @Test
+  @DisplayName("card 수정 실패 - Board가 존재하지 않음 테스트")
+  void updateCardBoardNotFoundTest() {
+    //given
+    arrangeCardUpdate(card);
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.updateCard(notExistBoardId, existListId, existCardId, request)
+    ).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 수정 실패 - List가 존재하지 않음 테스트")
+  void updateCardListNotFoundTest() {
+    //given
+    arrangeCardUpdate(card);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.updateCard(existBoardId, notExistListId, existCardId, request)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 수정 실패 - Card가 존재하지 않음 테스트")
+  void updateCardCardNotFoundTest() {
+    //given
+    arrangeCardUpdate(card);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(notExistCardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.updateCard(existBoardId, existListId, notExistCardId, request)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
   private void arrangeCardUpdate(Card beforeCard) {
