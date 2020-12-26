@@ -25,7 +25,9 @@ import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
+import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.lang.reflect.Field;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +48,7 @@ class CardServiceTest {
   final long existBoardId = 1L;
   final long notExistBoardId = 1234567898765432L;
   final long existListId = 1L;
+  final long destinationListId = 2L;
   final long notExistListId = 1234567898765432L;
   final long existCardId = 1L;
   final long notExistCardId = 1234567898765432L;
@@ -81,16 +84,20 @@ class CardServiceTest {
   Board board;
   User user;
   List list;
+  List destinationList;
   CardRequest request;
+  CardMoveRequest cardMoveRequest;
   Card card;
   Log cardAddLog;
   Log cardUpdateLog;
   Log cardArchiveLog;
+  Log cardMoveLog;
 
   CardDTO cardDTO;
   LogDTO cardAddLogDTO;
   LogDTO cardUpdateLogDTO;
   LogDTO cardArchiveLogDTO;
+  LogDTO cardMoveLogDTO;
   DTOContainer dtoContainer;
 
   @BeforeEach
@@ -283,6 +290,22 @@ class CardServiceTest {
         .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
+  private void arrangeCardUpdate(Card beforeCard) {
+    request.setTitle(editTitle);
+    request.setContents(editContents);
+
+    card = request.toEntity();
+    card.setList(list);
+    card.setUser(user);
+
+    cardDTO = CardDTO.from(card);
+
+    cardUpdateLog = Log
+        .cardUpdateLog(existListId, beforeCard.getTitle(), beforeCard.getContents(), card);
+    cardUpdateLogDTO = LogDTO.from(cardUpdateLog);
+    dtoContainer = new DTOContainer(cardDTO, cardUpdateLogDTO);
+  }
+
   @Test
   @DisplayName("card 삭제 성공 테스트")
   void archiveCardTest() {
@@ -395,19 +418,39 @@ class CardServiceTest {
     dtoContainer = new DTOContainer(cardDTO, cardArchiveLogDTO);
   }
 
-  private void arrangeCardUpdate(Card beforeCard) {
-    request.setTitle(editTitle);
-    request.setContents(editContents);
+  @Test
+  @DisplayName("card 이동 성공 테스트")
+  void moveCardTest() throws NoSuchFieldException, IllegalAccessException {
+    //given
+    arrangeMoveCard();
 
-    card = request.toEntity();
-    card.setList(list);
-    card.setUser(user);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.of(destinationList));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
 
-    cardDTO = CardDTO.from(card);
+    //when
+    DTOContainer result =
+        cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest);
 
-    cardUpdateLog = Log
-        .cardUpdateLog(existListId, beforeCard.getTitle(), beforeCard.getContents(), card);
-    cardUpdateLogDTO = LogDTO.from(cardUpdateLog);
-    dtoContainer = new DTOContainer(cardDTO, cardUpdateLogDTO);
+    //then
+    assertThat(result).usingRecursiveComparison().isEqualTo(dtoContainer);
+  }
+
+  private void arrangeMoveCard() throws NoSuchFieldException, IllegalAccessException {
+    destinationList = List.builder().build();
+    cardMoveRequest = new CardMoveRequest();
+    cardMoveRequest.setDestinationListId(destinationListId);
+
+    Field listIdField = List.class.getDeclaredField("id");
+    listIdField.setAccessible(true);
+    listIdField.set(destinationList, destinationListId);
+    listIdField.set(list, existListId);
+    cardDTO.setListId(destinationListId);
+
+    cardMoveLog = Log.cardMoveLog(existListId, destinationListId, board);
+    cardMoveLogDTO = LogDTO.from(cardMoveLog);
+
+    dtoContainer = new DTOContainer(cardDTO, cardMoveLogDTO);
   }
 }
