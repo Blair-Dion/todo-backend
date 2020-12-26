@@ -5,11 +5,13 @@ import dev.idion.bladitodo.domain.card.Card;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
+@Setter
 @ToString
 public class CardDTO implements ContainableDTO {
 

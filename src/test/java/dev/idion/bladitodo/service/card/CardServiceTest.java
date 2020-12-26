@@ -25,7 +25,9 @@ import dev.idion.bladitodo.domain.user.UserRepository;
 import dev.idion.bladitodo.web.dto.CardDTO;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
+import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.lang.reflect.Field;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +48,7 @@ class CardServiceTest {
   final long existBoardId = 1L;
   final long notExistBoardId = 1234567898765432L;
   final long existListId = 1L;
+  final long destinationListId = 2L;
   final long notExistListId = 1234567898765432L;
   final long existCardId = 1L;
   final long notExistCardId = 1234567898765432L;
@@ -81,16 +84,20 @@ class CardServiceTest {
   Board board;
   User user;
   List list;
+  List destinationList;
   CardRequest request;
+  CardMoveRequest cardMoveRequest;
   Card card;
   Log cardAddLog;
   Log cardUpdateLog;
   Log cardArchiveLog;
+  Log cardMoveLog;
 
   CardDTO cardDTO;
   LogDTO cardAddLogDTO;
   LogDTO cardUpdateLogDTO;
   LogDTO cardArchiveLogDTO;
+  LogDTO cardMoveLogDTO;
   DTOContainer dtoContainer;
 
   @BeforeEach
@@ -283,6 +290,22 @@ class CardServiceTest {
         .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
+  private void arrangeCardUpdate(Card beforeCard) {
+    request.setTitle(editTitle);
+    request.setContents(editContents);
+
+    card = request.toEntity();
+    card.setList(list);
+    card.setUser(user);
+
+    cardDTO = CardDTO.from(card);
+
+    cardUpdateLog = Log
+        .cardUpdateLog(existListId, beforeCard.getTitle(), beforeCard.getContents(), card);
+    cardUpdateLogDTO = LogDTO.from(cardUpdateLog);
+    dtoContainer = new DTOContainer(cardDTO, cardUpdateLogDTO);
+  }
+
   @Test
   @DisplayName("card 삭제 성공 테스트")
   void archiveCardTest() {
@@ -395,19 +418,134 @@ class CardServiceTest {
     dtoContainer = new DTOContainer(cardDTO, cardArchiveLogDTO);
   }
 
-  private void arrangeCardUpdate(Card beforeCard) {
-    request.setTitle(editTitle);
-    request.setContents(editContents);
+  @Test
+  @DisplayName("card 이동 성공 테스트")
+  void moveCardTest() throws NoSuchFieldException, IllegalAccessException {
+    //given
+    arrangeMoveCard();
 
-    card = request.toEntity();
-    card.setList(list);
-    card.setUser(user);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.of(destinationList));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
 
-    cardDTO = CardDTO.from(card);
+    //when
+    DTOContainer result =
+        cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest);
 
-    cardUpdateLog = Log
-        .cardUpdateLog(existListId, beforeCard.getTitle(), beforeCard.getContents(), card);
-    cardUpdateLogDTO = LogDTO.from(cardUpdateLog);
-    dtoContainer = new DTOContainer(cardDTO, cardUpdateLogDTO);
+    //then
+    assertThat(result).usingRecursiveComparison().isEqualTo(dtoContainer);
+  }
+
+
+  @Test
+  @DisplayName("card 이동 실패 - Board가 존재하지 않음 테스트")
+  void moveCardBoardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(notExistBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - List가 존재하지 않음 테스트")
+  void moveCardListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, notExistListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - 이동하려하는 List가 존재하지 않음 테스트")
+  void moveCardDestinationListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, notExistListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - Card가 존재하지 않음 테스트")
+  void moveCardCardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(notExistCardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, notExistCardId, cardMoveRequest)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void moveCardBoardNotContainsListTest() {
+    //given
+    list.setBoard(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 이동 실패 - List에 해당 Card가 존재하지 않음 테스트")
+  void moveCardListNotContainsCardTest() throws NoSuchFieldException, IllegalAccessException {
+    //given
+    arrangeMoveCard();
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage("이동하려하는 리스트가 존재하지 않습니다.");
+  }
+
+  private void arrangeMoveCard() throws NoSuchFieldException, IllegalAccessException {
+    destinationList = List.builder().build();
+    cardMoveRequest = new CardMoveRequest();
+    cardMoveRequest.setDestinationListId(destinationListId);
+
+    Field listIdField = List.class.getDeclaredField("id");
+    listIdField.setAccessible(true);
+    listIdField.set(destinationList, destinationListId);
+    listIdField.set(list, existListId);
+    cardDTO.setListId(destinationListId);
+
+    cardMoveLog = Log.cardMoveLog(existListId, destinationListId, board);
+    cardMoveLogDTO = LogDTO.from(cardMoveLog);
+
+    dtoContainer = new DTOContainer(cardDTO, cardMoveLogDTO);
   }
 }
