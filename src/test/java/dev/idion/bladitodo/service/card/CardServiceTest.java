@@ -235,6 +235,41 @@ class CardServiceTest {
         .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
+  @Test
+  @DisplayName("card 수정 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void updateCardBoardNotContainsListTest() {
+    //given
+    arrangeCardUpdate(card);
+    list.setBoard(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.updateCard(existBoardId, existListId, existCardId, request)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 수정 실패 - List에 해당 Card가 존재하지 않음 테스트")
+  void updateCardListNotContainsCardTest() {
+    //given
+    arrangeCardUpdate(card);
+    card.setList(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.updateCard(existBoardId, existListId, existCardId, request)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
   private void arrangeCardUpdate(Card beforeCard) {
     request.setTitle(editTitle);
     request.setContents(editContents);
