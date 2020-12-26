@@ -3,6 +3,7 @@ package dev.idion.bladitodo.domain.card;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.user.User;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,10 +55,10 @@ public class Card extends BaseEntity {
     this.list = list;
   }
 
-  public void archiveCard() {
+  public void archiveCard(Clock clock) {
     this.pos = null;
     this.isArchived = true;
-    this.archivedDatetime = LocalDateTime.now();
+    this.archivedDatetime = LocalDateTime.now(clock);
   }
 
   public void setList(List list) {

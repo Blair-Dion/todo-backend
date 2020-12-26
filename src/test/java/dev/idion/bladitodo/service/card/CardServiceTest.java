@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.service.card;
 
+import static dev.idion.bladitodo.common.TimeConstants.ASIA_SEOUL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,6 +26,9 @@ import dev.idion.bladitodo.web.dto.CardDTO;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.dto.LogDTO;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +40,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
+
+  private static final LocalDate LOCAL_DATE = LocalDate.of(2020, 12, 26);
 
   final long existBoardId = 1L;
   final long notExistBoardId = 1234567898765432L;
@@ -67,6 +73,11 @@ class CardServiceTest {
   @Mock
   LogRepository logRepository;
 
+  @Mock
+  Clock clock;
+
+  Clock fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ASIA_SEOUL).toInstant(), ASIA_SEOUL);
+
   Board board;
   User user;
   List list;
@@ -74,10 +85,12 @@ class CardServiceTest {
   Card card;
   Log cardAddLog;
   Log cardUpdateLog;
+  Log cardArchiveLog;
 
   CardDTO cardDTO;
   LogDTO cardAddLogDTO;
   LogDTO cardUpdateLogDTO;
+  LogDTO cardArchiveLogDTO;
   DTOContainer dtoContainer;
 
   @BeforeEach
@@ -268,6 +281,118 @@ class CardServiceTest {
         () -> cardService.updateCard(existBoardId, existListId, existCardId, request)
     ).isInstanceOf(CardNotFoundException.class)
         .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 성공 테스트")
+  void archiveCardTest() {
+    //given
+    arrangeArchiveCard();
+
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+
+    //when
+    DTOContainer archiveResult = cardService.archiveCard(existBoardId, existListId, existCardId);
+    CardDTO archiveResultCardDTO = (CardDTO) archiveResult.getResult();
+
+    //then
+    assertThat(archiveResult).usingRecursiveComparison().isEqualTo(dtoContainer);
+    assertThat(archiveResultCardDTO.getPos()).isNull();
+    assertThat(archiveResultCardDTO.isArchived()).isTrue();
+    assertThat(archiveResultCardDTO.getArchivedDatetime()).isEqualTo(LocalDateTime.now(clock));
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - Board가 존재하지 않음 테스트")
+  void archiveCardBoardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(notExistBoardId, existListId, existCardId)
+    ).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - List가 존재하지 않음 테스트")
+  void archiveCardListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, notExistListId, existCardId)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - Card가 존재하지 않음 테스트")
+  void archiveCardCardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(notExistCardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, notExistCardId)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void archiveCardBoardNotContainsListTest() {
+    //given
+    list.setBoard(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, existCardId)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - List에 해당 Card가 존재하지 않음 테스트")
+  void archiveCardListNotContainsCardTest() {
+    //given
+    card.setList(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, existCardId)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  private void arrangeArchiveCard() {
+    given(clock.instant()).willReturn(fixedClock.instant());
+    given(clock.getZone()).willReturn(fixedClock.getZone());
+
+    card.archiveCard(clock);
+    cardDTO = CardDTO.from(card);
+
+    cardArchiveLog =
+        Log.cardArchiveLog(existListId, card.getTitle(), card.getContents(), card);
+    cardArchiveLogDTO = LogDTO.from(cardArchiveLog);
+    dtoContainer = new DTOContainer(cardDTO, cardArchiveLogDTO);
   }
 
   private void arrangeCardUpdate(Card beforeCard) {
