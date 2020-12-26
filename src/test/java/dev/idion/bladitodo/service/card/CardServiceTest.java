@@ -270,6 +270,84 @@ class CardServiceTest {
         .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
+  @Test
+  @DisplayName("card 삭제 실패 - Board가 존재하지 않음 테스트")
+  void archiveCardBoardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(notExistBoardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(notExistBoardId, existListId, existCardId)
+    ).isInstanceOf(BoardNotFoundException.class)
+        .hasMessage(ErrorCode.BOARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - List가 존재하지 않음 테스트")
+  void archiveCardListNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(notExistListId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, notExistListId, existCardId)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - Card가 존재하지 않음 테스트")
+  void archiveCardCardNotFoundTest() {
+    //given
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(notExistCardId))).willReturn(Optional.empty());
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, notExistCardId)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - Board에 해당 List가 존재하지 않음 테스트")
+  void archiveCardBoardNotContainsListTest() {
+    //given
+    list.setBoard(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, existCardId)
+    ).isInstanceOf(ListNotFoundException.class)
+        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("card 삭제 실패 - List에 해당 Card가 존재하지 않음 테스트")
+  void archiveCardListNotContainsCardTest() {
+    //given
+    card.setList(null);
+    given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+
+    //when
+    //then
+    assertThatThrownBy(
+        () -> cardService.archiveCard(existBoardId, existListId, existCardId)
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
+  }
+
   private void arrangeCardUpdate(Card beforeCard) {
     request.setTitle(editTitle);
     request.setContents(editContents);
