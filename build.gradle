@@ -27,6 +27,7 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.querydsl:querydsl-jpa'
@@ -36,10 +37,6 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // Bean Validation 2.0 => 추후 3.0 Release 되면 Migration
-    implementation 'org.hibernate.validator:hibernate-validator:6.1.7.Final'
-    implementation 'org.glassfish:jakarta.el:3.0.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
