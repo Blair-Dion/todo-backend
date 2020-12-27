@@ -4,6 +4,7 @@ import dev.idion.bladitodo.service.card.CardService;
 import dev.idion.bladitodo.web.dto.DTOContainer;
 import dev.idion.bladitodo.web.v1.card.request.CardMoveRequest;
 import dev.idion.bladitodo.web.v1.card.request.CardRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CardController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public DTOContainer createCard(@PathVariable Long boardId, @PathVariable Long listId,
-      @RequestBody CardRequest request) {
+      @RequestBody @Valid CardRequest request) {
     DTOContainer createdCardContainer = cardService.createCardInto(boardId, listId, request);
     log.debug("생성된 카드 정보: {}", createdCardContainer);
 
@@ -36,7 +37,7 @@ public class CardController {
 
   @PutMapping("/{cardId}")
   public DTOContainer updateCard(@PathVariable Long boardId, @PathVariable Long listId,
-      @PathVariable Long cardId, @RequestBody CardRequest request) {
+      @PathVariable Long cardId, @RequestBody @Valid CardRequest request) {
     DTOContainer updatedCardContainer = cardService.updateCard(boardId, listId, cardId, request);
     log.debug("변경된 카드 정보: {}", updatedCardContainer);
 
