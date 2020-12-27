@@ -468,18 +468,21 @@ class CardServiceTest {
   }
 
   @Test
-  @DisplayName("card 이동 실패 - 이동하려하는 List가 존재하지 않음 테스트")
-  void moveCardDestinationListNotFoundTest() {
+  @DisplayName("card 이동 실패 - 이동하려는 List가 존재하지 않음 테스트")
+  void moveCardDestinationListNotFoundTest() throws NoSuchFieldException, IllegalAccessException {
     //given
+    arrangeMoveCard();
     given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
-    given(listRepository.findById(eq(existListId))).willReturn(Optional.empty());
+    given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
+    given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
+    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.empty());
 
     //when
     //then
     assertThatThrownBy(
-        () -> cardService.moveCard(existBoardId, notExistListId, existCardId, cardMoveRequest)
+        () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
     ).isInstanceOf(ListNotFoundException.class)
-        .hasMessage(ErrorCode.LIST_NOT_FOUND.getMessage());
+        .hasMessage("이동하려하는 리스트가 존재하지 않습니다.");
   }
 
   @Test
@@ -516,20 +519,19 @@ class CardServiceTest {
 
   @Test
   @DisplayName("card 이동 실패 - List에 해당 Card가 존재하지 않음 테스트")
-  void moveCardListNotContainsCardTest() throws NoSuchFieldException, IllegalAccessException {
+  void moveCardListNotContainsCardTest() {
     //given
-    arrangeMoveCard();
+    card.setList(null);
     given(boardRepository.findByBoardId(eq(existBoardId))).willReturn(Optional.of(board));
     given(listRepository.findById(eq(existListId))).willReturn(Optional.of(list));
     given(cardRepository.findById(eq(existCardId))).willReturn(Optional.of(card));
-    given(listRepository.findById(eq(destinationListId))).willReturn(Optional.empty());
 
     //when
     //then
     assertThatThrownBy(
         () -> cardService.moveCard(existBoardId, existListId, existCardId, cardMoveRequest)
-    ).isInstanceOf(ListNotFoundException.class)
-        .hasMessage("이동하려하는 리스트가 존재하지 않습니다.");
+    ).isInstanceOf(CardNotFoundException.class)
+        .hasMessage(ErrorCode.CARD_NOT_FOUND.getMessage());
   }
 
   private void arrangeMoveCard() throws NoSuchFieldException, IllegalAccessException {
