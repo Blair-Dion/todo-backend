@@ -41,9 +41,7 @@ public class CardService {
   public DTOContainer createCardInto(Long boardId, Long listId, CardRequest request) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     log.debug("카드요청 객체: {}", request);
     Card card = request.toEntity();
@@ -64,14 +62,11 @@ public class CardService {
   public DTOContainer updateCard(Long boardId, Long listId, Long cardId, CardRequest request) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
+
     log.debug("카드요청 객체: {}", request);
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
@@ -88,14 +83,11 @@ public class CardService {
   public DTOContainer moveCard(Long boardId, Long listId, Long cardId, CardMoveRequest request) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
+
     log.debug("카드 이동 요청 객체: {}", request);
     List destinationList = listRepository.findById(request.getDestinationListId())
         .orElseThrow(() -> new ListNotFoundException("이동하려하는 리스트가 존재하지 않습니다."));
@@ -110,14 +102,10 @@ public class CardService {
   public DTOContainer archiveCard(Long boardId, Long listId, Long cardId) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
 
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();

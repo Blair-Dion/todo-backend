@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain.list;
 
+import dev.idion.bladitodo.common.error.exception.domain.CardNotFoundException;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.board.Board;
 import dev.idion.bladitodo.domain.card.Card;
@@ -69,5 +70,11 @@ public class List extends BaseEntity {
 
   public void rename(String name) {
     this.name = name;
+  }
+
+  public void checkNotContainsCard(Card card) {
+    if (!cards.contains(card)) {
+      throw new CardNotFoundException();
+    }
   }
 }
