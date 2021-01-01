@@ -57,9 +57,7 @@ public class ListService {
 
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     log.debug("리스트 요청 객체: {}", request);
     list.rename(request.getName());
@@ -74,9 +72,7 @@ public class ListService {
   public DTOContainer archiveList(Long boardId, Long listId) {
     Board board = boardRepository.findByBoardId(boardId).orElseThrow(BoardNotFoundException::new);
     List list = listRepository.findById(listId).orElseThrow(ListNotFoundException::new);
-    if (!board.getLists().contains(list)) {
-      throw new ListNotFoundException();
-    }
+    board.checkNotContainsList(list);
 
     log.debug("보관할 리스트 정보: {}", list);
     list.archiveList(clock);

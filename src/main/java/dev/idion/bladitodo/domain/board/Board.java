@@ -1,5 +1,6 @@
 package dev.idion.bladitodo.domain.board;
 
+import dev.idion.bladitodo.common.error.exception.domain.ListNotFoundException;
 import dev.idion.bladitodo.domain.base.BaseEntity;
 import dev.idion.bladitodo.domain.list.List;
 import dev.idion.bladitodo.domain.log.Log;
@@ -36,5 +37,11 @@ public class Board extends BaseEntity {
   @Builder(setterPrefix = "with")
   private Board(String name) {
     this.name = name;
+  }
+
+  public void checkNotContainsList(List list) {
+    if (!lists.contains(list)) {
+      throw new ListNotFoundException();
+    }
   }
 }
