@@ -65,9 +65,8 @@ public class CardService {
     board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
+
     log.debug("카드요청 객체: {}", request);
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
@@ -87,9 +86,8 @@ public class CardService {
     board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
+
     log.debug("카드 이동 요청 객체: {}", request);
     List destinationList = listRepository.findById(request.getDestinationListId())
         .orElseThrow(() -> new ListNotFoundException("이동하려하는 리스트가 존재하지 않습니다."));
@@ -107,9 +105,7 @@ public class CardService {
     board.checkNotContainsList(list);
 
     Card card = cardRepository.findById(cardId).orElseThrow(CardNotFoundException::new);
-    if (!list.getCards().contains(card)) {
-      throw new CardNotFoundException();
-    }
+    list.checkNotContainsCard(card);
 
     String beforeTitle = card.getTitle();
     String beforeContents = card.getContents();
